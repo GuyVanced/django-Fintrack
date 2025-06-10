@@ -5,7 +5,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model=Account
         # fields=['id','account_type','isWallet','isDefault','user','name','account_number','wallet_number','balance','description']
-        fields=['id','account_type','isWallet','isDefault','name','account_number','wallet_number','balance','description']
+        fields=['id','user','account_type','isWallet','isDefault','name','account_number','wallet_number','balance','description']
         
 
 

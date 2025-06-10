@@ -18,16 +18,16 @@ class Transaction(models.Model):
         Account, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.CharField(max_length=255, blank=True)
-    date = models.DateTimeField(auto_now=True)
-    category = models.CharField(max_length=50, blank=True)
+    date = models.DateTimeField(auto_now=True) ##same like updated_at saves latest time 
+    category = models.CharField(max_length=50,default=None)
     receiptUrl = models.URLField(blank=True)
     isRecurring = models.BooleanField(default=False)
     recurringInterval = models.CharField(max_length=50, blank=True)
     nextRecurringDate = models.DateTimeField(blank=True, null=True)
     lastProcessedDate = models.DateTimeField(blank=True, null=True)
     # status=models.TimeField(auto_now=True)
-    createdAt = models.DateTimeField(auto_now=True)
-    updatedAt = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    # updatedAt = models.DateTimeField(auto_now=True)
     
 
     def clean(self):
@@ -41,8 +41,7 @@ class Transaction(models.Model):
                 errors['recurringInterval'] = 'recurringInterval is required for recurring transactions'
                 errors['nextRecurringDate'] = 'nextRecurringDate is required for recurring transactions'    
                 
-        if self.category is None:
-            errors['category'] = 'category is required.'
+    
 
         if errors:
             raise ValidationError(errors)
