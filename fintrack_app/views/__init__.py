@@ -4,4 +4,4 @@ from .transaction import TransactionListCreateView, TransactionRetrieveUpdateDes
 from .budget import BudgetListCreateView, BudgetRetrieveUpdateDestroyView
 # from .user import UserView
 
-from .categorySummary import CategorySummaryView
+from .categorySummary import CombinedCategorySummaryView

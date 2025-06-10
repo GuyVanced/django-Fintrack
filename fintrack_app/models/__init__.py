@@ -2,6 +2,7 @@
 from .account import Account
 from .transaction import Transaction
 from .budget import Budget
+from .categorytotal import CategoryTotal
 
 # __all__=["User", "Account" , "Transaction" , "Budget"]
-__all__=[ "Account" , "Transaction" , "Budget"]
+__all__=[ "Account" , "Transaction" , "Budget","CategoryTotal"]
