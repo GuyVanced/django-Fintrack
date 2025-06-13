@@ -4,8 +4,11 @@ from rest_framework.generics import ListCreateAPIView,CreateAPIView,RetrieveAPIV
 
 class AccountListCreateView(ListCreateAPIView):
     serializer_class=AccountSerializer
-    queryset=Account.objects.all()
-
+    # queryset=Account.objects.all()
+    def get_queryset(self):
+        user=self.request.user
+        queryset=Account.objects.filter(user=user)
+        return queryset
     # def perform_create(self,serializer):
     #     # user=self.request.user
     #     serializer.save()
@@ -38,8 +41,8 @@ class AccountRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     lookup_field='id'
 
     def get_queryset(self):
-          
-        queryset=Account.objects.all()
+        user=self.request.user
+        queryset=Account.objects.filter(user=user)
         return queryset
   
 

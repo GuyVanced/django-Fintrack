@@ -13,4 +13,8 @@ class CategoryTotal(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        unique_together = ['user', 'category', 'account', 'transaction_type']
+        # unique_together = ['user', 'category', 'account', 'transaction_type']
+        pass
+
+    def __str__(self):
+        return self.category

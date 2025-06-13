@@ -11,14 +11,15 @@ class Transaction(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='transactions',default=1)
+        User, on_delete=models.CASCADE, related_name='transactions')
     transaction_type = models.CharField(
         choices=Transaction_type.choices, default=Transaction_type.MYEXPENSE)
     account = models.ForeignKey(
         Account, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.CharField(max_length=255, blank=True)
-    date = models.DateTimeField(auto_now=True) ##same like updated_at saves latest time 
+    # date = models.DateTimeField(auto_now=True) ##same like updated_at saves latest time 
+    date = models.DateTimeField()
     category = models.CharField(max_length=50,default=None)
     receiptUrl = models.URLField(blank=True)
     isRecurring = models.BooleanField(default=False)
@@ -56,5 +57,5 @@ class Transaction(models.Model):
     class Meta:
         db_table = 'transaction'
         ordering = ['-date']
-        unique_together = ('user', 'account', 'category')
+        # unique_together = ('user', 'account', 'category')
         # unique_together = ( 'account', 'category')

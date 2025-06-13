@@ -1,6 +1,6 @@
 from django.contrib import admin
 # from .models import User, Account, Transaction, Budget
-from .models import  Account, Transaction, Budget
+from .models import  Account, Transaction, Budget,CategoryTotal
 
 
 # class UserAdmin(admin.ModelAdmin):
@@ -20,17 +20,23 @@ class AccountAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     exclude = ['createdAt', 'updatedAt']
     # list_display = ['category', 'transaction_type', 'amount', 'user']
-    list_display = ['category', 'transaction_type', 'amount']
+    list_display = ['category', 'transaction_type', 'amount','user','account']
 
 
-class BudgetAdmin(admin.ModelAdmin):
-    exclude = ['createdAt', 'updatedAt']
-    # list_display = ['transaction', 'amount', 'user',]
-    list_display = ['transaction', 'amount',]
+# class BudgetAdmin(admin.ModelAdmin):
+#     exclude = ['createdAt', 'updatedAt']
+#     # list_display = ['transaction', 'amount', 'user',]
+#     list_display = ['transaction', 'amount',]
 
+# class CategoryTotalAdmin(admin.ModelAdmin):
+#     exclude=['']    
+@admin.register(CategoryTotal)
+class CategoryTotalAdmin(admin.ModelAdmin):
+    list_display = ['user', 'category', 'account', 'transaction_type', 'total_amount']
+    list_filter = ['user', 'transaction_type']
 
 # admin.site.register(User, UserAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Transaction, TransactionAdmin)
-admin.site.register(Budget, BudgetAdmin)
+# admin.site.register(Budget, BudgetAdmin)
 # admin.site.register(Account_type, Account_typeAdmin)

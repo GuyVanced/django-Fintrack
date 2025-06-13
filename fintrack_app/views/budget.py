@@ -5,10 +5,18 @@ from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIVi
 
 class BudgetListCreateView(ListCreateAPIView):
     serializer_class=BudgetSerializer
-    queryset=Budget.objects.all()
+    
+    def get_queryset(self):
+        user=self.request.user
+        queryset=Budget.objects.filter(user=user)
+        return queryset
 
 
 class BudgetRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class=BudgetSerializer
     lookup_field='id'
-    queryset=Budget.objects.all()
+    
+    def get_queryset(self):
+        user=self.request.user
+        queryset=Budget.objects.filter(user=user)
+        return queryset

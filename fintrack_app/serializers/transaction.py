@@ -88,8 +88,11 @@
 from rest_framework import serializers
 from fintrack_app.models import Transaction, CategoryTotal
 from django.db import transaction as db_transaction
+import logging
+logger=logging.getLogger(__name__)
 
 class TransactionSerializer(serializers.ModelSerializer):
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Transaction
         fields = [
@@ -97,6 +100,9 @@ class TransactionSerializer(serializers.ModelSerializer):
             'category', 'receiptUrl', 'isRecurring', 'recurringInterval',
             'nextRecurringDate', 'lastProcessedDate'
         ]
+                # An alternative way to make the user read-only
+        # extra_kwargs = {'user': {'read_only': True}}
+        
 
     def validate(self, validated_data):
         errors = {}
@@ -122,22 +128,15 @@ class TransactionSerializer(serializers.ModelSerializer):
             defaults={'total_amount': 0}
         )
         category_total.total_amount += delta_amount
+                # Ensure total_amount doesn't go below zero for expenses if that's desired behavior
+        if category_total.total_amount < 0 and transaction_type == Transaction.Transaction_type.MYEXPENSE:
+            category_total.total_amount = 0
+
+        logger.info(f"Updating CatgeoryTotal for user {user} , category {category} , account {account} , delta {delta_amount}")    
+
         category_total.save()
 
-    def reverse_category_total(self, user, account, category, transaction_type, delta_amount):
-        try:
-            category_total = CategoryTotal.objects.get(
-                user=user,
-                account=account,
-                category=category,
-                transaction_type=transaction_type,
-            )
-            category_total.total_amount -= delta_amount
-            if category_total.total_amount < 0:
-                category_total.total_amount = 0
-            category_total.save()
-        except CategoryTotal.DoesNotExist:
-            pass  # no change needed
+
 
     @db_transaction.atomic
     def create(self, validated_data):
@@ -148,9 +147,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         category = validated_data['category']
 
         # Update account balance
-        if transaction_type == 'In':
+        if transaction_type == Transaction.Transaction_type.MYINCOME:
             account.balance += amount
-        elif transaction_type == 'Ex':
+        elif transaction_type == Transaction.Transaction_type.MYEXPENSE:
             account.balance -= amount
         account.save()
 
@@ -167,15 +166,17 @@ class TransactionSerializer(serializers.ModelSerializer):
         old_category = instance.category
         user = instance.user
 
+
         # Reverse old account balance
-        if old_type == 'In':
+        if old_type == Transaction.Transaction_type.MYINCOME:
             old_account.balance -= old_amount
         else:
             old_account.balance += old_amount
         old_account.save()
 
-        # Reverse category total
-        self.reverse_category_total(user, old_account, old_category, old_type, old_amount)
+        self.update_category_total(user, old_account, old_category, old_type, -old_amount) # Subtract old amount
+
+
 
         # Update the instance with new values
         updated_instance = super().update(instance, validated_data)
@@ -186,7 +187,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         new_category = validated_data.get('category', old_category)
 
         # Update new account balance
-        if new_type == 'In':
+        if new_type == Transaction.Transaction_type.MYINCOME:
             new_account.balance += new_amount
         else:
             new_account.balance -= new_amount

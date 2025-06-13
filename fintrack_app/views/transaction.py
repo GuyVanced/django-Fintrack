@@ -6,7 +6,13 @@ from django.db import transaction as db_transaction
 
 class TransactionListCreateView(ListCreateAPIView):
     serializer_class=TransactionSerializer
-    queryset=Transaction.objects.all()
+    # queryset=Transaction.objects.all()
+    def get_queryset(self):
+        user=self.request.user
+        if user.is_authenticated:
+            queryset=Transaction.objects.filter(user=user).order_by('-date')
+            return queryset
+        return Transaction.objects.none()
 
 
 # class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -33,7 +39,13 @@ class TransactionListCreateView(ListCreateAPIView):
 class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     lookup_field = 'id'
-    queryset = Transaction.objects.all()
+    
+    def get_queryset(self):
+        user=self.request.user
+        if user.is_authenticated:
+            queryset=Transaction.objects.filter(user=user).order_by('-date')
+            return queryset
+        return Transaction.objects.none()
 
     @db_transaction.atomic
     def perform_destroy(self, instance):

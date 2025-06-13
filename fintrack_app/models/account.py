@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class Account_type(models.Model):
-    account_type = models.CharField(max_length=50, unique=True)
+    account_type = models.CharField(max_length=50)
     isWallet = models.BooleanField(default=False)
 
     class Meta:
@@ -17,7 +17,7 @@ class Account(Account_type, models.Model):
     id = models.AutoField(primary_key=True)
     isDefault = models.BooleanField(default=False)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='accounts',default=1)
+        User, on_delete=models.CASCADE, related_name='accounts')
     name = models.CharField(max_length=100)
     account_number = models.BigIntegerField(unique=True, null=True, blank=True)
     wallet_number = models.BigIntegerField(unique=True, null=True, blank=True)
