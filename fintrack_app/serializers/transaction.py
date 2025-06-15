@@ -34,55 +34,6 @@ class TransactionSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
     @db_transaction.atomic
-    # def update(self, instance, validated_data):
-    #     old_type = instance.transaction_type
-    #     old_amount = instance.amount
-    #     old_account = instance.account
-    #     old_category = instance.category
-        
-
-
-
-
-    #     # Reverse old account balance
-    #     if old_type == Transaction.Transaction_type.MYINCOME:
-    #         old_account.balance -= old_amount
-    #     else:
-    #         old_account.balance += old_amount
-    #     old_account.save()
-        
-    #     if old_amount:
-    #         old_category.total_amount-=old_amount
-
-    #     old_category.save()    
-
-
-
-
-    #     # Update the instance with new values
-    #     updated_instance = super().update(instance, validated_data)
-
-    #     new_type = validated_data.get('transaction_type', old_type)
-    #     new_amount = validated_data.get('amount', old_amount)
-    #     new_account = validated_data.get('account', old_account)
-    #     new_category = validated_data.get('category', old_category)
-
-    #     # Update new account balance
-    #     if new_type == Transaction.Transaction_type.MYINCOME:
-    #         new_account.balance += new_amount
-    #     else:
-    #         new_account.balance -= new_amount
-    #     new_account.save()
-
-    #     if new_amount:
-    #         new_category.total_amount+=new_amount
-
-    #     new_category.save()  
-        
-
-
-    #     return updated_instance
-
     def update(self,instance,validated_data):
         old_type=instance.transaction_type
         old_amount=instance.amount
