@@ -2311,3 +2311,495 @@ DEBUG 2025-06-13 11:29:53,911 utils (0.002)
             WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
             ORDER BY name; args=None; alias=default
 DEBUG 2025-06-13 11:29:53,932 utils (0.000) SELECT "django_migrations"."id", "django_migrations"."app", "django_migrations"."name", "django_migrations"."applied" FROM "django_migrations"; args=(); alias=default
+WARNING 2025-06-13 11:31:45,045 log Not Found: /
+WARNING 2025-06-13 11:31:45,366 log Not Found: /favicon.ico
+INFO 2025-06-13 13:34:53,166 autoreload Watching for file changes with StatReloader
+DEBUG 2025-06-13 13:34:58,111 utils (0.002) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None; alias=default
+DEBUG 2025-06-13 13:34:58,168 utils (0.001) SELECT "django_migrations"."id", "django_migrations"."app", "django_migrations"."name", "django_migrations"."applied" FROM "django_migrations"; args=(); alias=default
+WARNING 2025-06-13 13:37:43,226 log Not Found: /
+WARNING 2025-06-13 13:37:43,621 log Not Found: /favicon.ico
+DEBUG 2025-06-13 13:37:50,002 utils (0.004) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:52:49.994114' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:52:49.994114', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:37:50,014 utils (0.002) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:37:50,037 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:52:50.033183' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:52:50.033183', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:37:50,044 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:37:50,080 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:52:50.078712' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:52:50.078712', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:37:50,082 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:37:50,158 utils (0.001) SELECT "django_admin_log"."id", "django_admin_log"."action_time", "django_admin_log"."user_id", "django_admin_log"."content_type_id", "django_admin_log"."object_id", "django_admin_log"."object_repr", "django_admin_log"."action_flag", "django_admin_log"."change_message", "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined", "django_content_type"."id", "django_content_type"."app_label", "django_content_type"."model" FROM "django_admin_log" INNER JOIN "auth_user" ON ("django_admin_log"."user_id" = "auth_user"."id") LEFT OUTER JOIN "django_content_type" ON ("django_admin_log"."content_type_id" = "django_content_type"."id") WHERE "django_admin_log"."user_id" = 1 ORDER BY "django_admin_log"."action_time" DESC LIMIT 10; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:08,931 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:53:08.928252' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:53:08.928252', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:38:08,944 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:08,978 utils (0.001) SELECT "transaction"."id", "transaction"."user_id", "transaction"."transaction_type", "transaction"."account_id", "transaction"."amount", "transaction"."description", "transaction"."date", "transaction"."category", "transaction"."receiptUrl", "transaction"."isRecurring", "transaction"."recurringInterval", "transaction"."nextRecurringDate", "transaction"."lastProcessedDate", "transaction"."createdAt" FROM "transaction" WHERE "transaction"."user_id" = 1 ORDER BY "transaction"."date" DESC; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:08,997 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:38:09,005 utils (0.001) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:38:13,573 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:53:13.572454' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:53:13.572454', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:38:13,577 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:13,582 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" WHERE "account"."user_id" = 1 ORDER BY "account"."createdAt" DESC; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:13,595 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:38:17,468 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:53:17.464634' AND "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp') LIMIT 21; args=('2025-06-13 07:53:17.464634', 'gofvlkegepuc97zx6c9s4hifuosa71tp'); alias=default
+DEBUG 2025-06-13 13:38:17,473 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:38:17,478 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE "django_session"."session_key" = 'gofvlkegepuc97zx6c9s4hifuosa71tp' LIMIT 21; args=('gofvlkegepuc97zx6c9s4hifuosa71tp',); alias=default
+DEBUG 2025-06-13 13:38:17,496 utils (0.012) DELETE FROM "django_session" WHERE "django_session"."session_key" IN ('gofvlkegepuc97zx6c9s4hifuosa71tp'); args=('gofvlkegepuc97zx6c9s4hifuosa71tp',); alias=default
+DEBUG 2025-06-13 13:38:17,612 utils (0.001) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:38:17,614 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:38:17,620 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:38:17,621 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+ERROR 2025-06-13 13:38:17,659 log Internal Server Error: /api/accounts/
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\contrib\auth\models.py", line 549, in __int__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot cast AnonymousUser to int. Are you trying to use it in place of User?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\views\account.py", line 10, in get_queryset
+    queryset=Account.objects.filter(user=user)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1491, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1509, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1516, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1643, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<7 lines>...
+        update_join_types=update_join_types,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1585, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1412, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+TypeError: Field 'id' expected a number but got <django.contrib.auth.models.AnonymousUser object at 0x000002513FD3D090>.
+DEBUG 2025-06-13 13:39:02,984 utils (0.001) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:02,987 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:02,989 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:02,992 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+ERROR 2025-06-13 13:39:03,027 log Internal Server Error: /api/accounts/
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\contrib\auth\models.py", line 549, in __int__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot cast AnonymousUser to int. Are you trying to use it in place of User?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\views\account.py", line 10, in get_queryset
+    queryset=Account.objects.filter(user=user)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1491, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1509, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1516, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1643, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<7 lines>...
+        update_join_types=update_join_types,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1585, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1412, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+TypeError: Field 'id' expected a number but got <django.contrib.auth.models.AnonymousUser object at 0x000002513FCC4E90>.
+DEBUG 2025-06-13 13:39:21,859 utils (0.001) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:21,863 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:21,867 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+DEBUG 2025-06-13 13:39:21,873 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 21; args=(); alias=default
+ERROR 2025-06-13 13:39:21,922 log Internal Server Error: /api/accounts/
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\contrib\auth\models.py", line 549, in __int__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot cast AnonymousUser to int. Are you trying to use it in place of User?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\views\account.py", line 10, in get_queryset
+    queryset=Account.objects.filter(user=user)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1491, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1509, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\query.py", line 1516, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1643, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<7 lines>...
+        update_join_types=update_join_types,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1585, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\sql\query.py", line 1412, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "E:\ESEWA-FINTRACK-FULLSTACK\myenv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+TypeError: Field 'id' expected a number but got <django.contrib.auth.models.AnonymousUser object at 0x000002513FD8D370>.
+DEBUG 2025-06-13 13:39:29,905 utils (0.001) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:39:29,909 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:39:31,850 utils (0.001) SELECT "django_site"."id", "django_site"."domain", "django_site"."name" FROM "django_site" WHERE "django_site"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:39:42,480 utils (0.002) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."username" = 'ayush' LIMIT 21; args=('ayush',); alias=default
+DEBUG 2025-06-13 13:39:43,753 utils (0.000) SELECT 1 AS "a" FROM "django_session" WHERE "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c' LIMIT 1; args=(1, 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:43,760 utils (0.000) BEGIN; args=None; alias=default
+DEBUG 2025-06-13 13:39:43,763 utils (0.002) INSERT INTO "django_session" ("session_key", "session_data", "expire_date") VALUES ('zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c', 'e30:1uPzFL:WoEycnkmdKjBfiPUcxymLkg4NfI-Q4-h1M55M-cwrx0', '2025-06-27 07:54:43.760666'); args=('zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c', 'e30:1uPzFL:WoEycnkmdKjBfiPUcxymLkg4NfI-Q4-h1M55M-cwrx0', '2025-06-27 07:54:43.760666'); alias=default
+DEBUG 2025-06-13 13:39:43,770 utils (0.006) COMMIT; args=None; alias=default
+DEBUG 2025-06-13 13:39:43,785 utils (0.013) UPDATE "auth_user" SET "last_login" = '2025-06-13 07:54:43.771907' WHERE "auth_user"."id" = 2; args=('2025-06-13 07:54:43.771907', 2); alias=default
+DEBUG 2025-06-13 13:39:43,787 utils (0.000) BEGIN; args=None; alias=default
+DEBUG 2025-06-13 13:39:43,789 utils (0.001) UPDATE "django_session" SET "session_data" = '.eJxVjEEOwiAQRe_C2hBooYBL956BzDCDVA0kpV0Z765NutDtf-_9l4iwrSVunZc4kziLQZx-N4T04LoDukO9NZlaXZcZ5a7Ig3Z5bcTPy-H-HRTo5VvzyNrkYJnH4ID8QAoTeztlDuiRnPEUjOesjMtBTSYoyInJa0Kn7SjeHwO2OIs:1uPzFL:yrwgi8AFHlXJzN6gZaYojdnBZobFEt-NgPjezGE4eWE', "expire_date" = '2025-06-27 07:54:43.787483' WHERE "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'; args=('.eJxVjEEOwiAQRe_C2hBooYBL956BzDCDVA0kpV0Z765NutDtf-_9l4iwrSVunZc4kziLQZx-N4T04LoDukO9NZlaXZcZ5a7Ig3Z5bcTPy-H-HRTo5VvzyNrkYJnH4ID8QAoTeztlDuiRnPEUjOesjMtBTSYoyInJa0Kn7SjeHwO2OIs:1uPzFL:yrwgi8AFHlXJzN6gZaYojdnBZobFEt-NgPjezGE4eWE', '2025-06-27 07:54:43.787483', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:43,801 utils (0.008) COMMIT; args=None; alias=default
+DEBUG 2025-06-13 13:39:43,812 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:54:43.809833' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:54:43.809833', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:43,815 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:43,818 utils (0.000) SELECT "transaction"."id", "transaction"."user_id", "transaction"."transaction_type", "transaction"."account_id", "transaction"."amount", "transaction"."description", "transaction"."date", "transaction"."category", "transaction"."receiptUrl", "transaction"."isRecurring", "transaction"."recurringInterval", "transaction"."nextRecurringDate", "transaction"."lastProcessedDate", "transaction"."createdAt" FROM "transaction" WHERE "transaction"."user_id" = 2 ORDER BY "transaction"."date" DESC; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:43,824 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:39:43,828 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:39:51,117 utils (0.002) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:54:51.112509' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:54:51.112509', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:51,123 utils (0.001) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:51,133 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" WHERE "account"."user_id" = 2 ORDER BY "account"."createdAt" DESC; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:51,148 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:39:59,896 utils (0.005) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:54:59.888281' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:54:59.888281', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:59,902 utils (0.001) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:59,970 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:54:59.966159' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:54:59.966159', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:39:59,980 utils (0.006) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:39:59,990 utils (0.000) SELECT "django_content_type"."app_label" AS "content_type__app_label", "auth_permission"."codename" AS "codename" FROM "auth_permission" INNER JOIN "auth_user_user_permissions" ON ("auth_permission"."id" = "auth_user_user_permissions"."permission_id") INNER JOIN "django_content_type" ON ("auth_permission"."content_type_id" = "django_content_type"."id") WHERE "auth_user_user_permissions"."user_id" = 2; args=(2,); alias=default
+DEBUG 2025-06-13 13:40:00,001 utils (0.001) SELECT "django_content_type"."app_label" AS "content_type__app_label", "auth_permission"."codename" AS "codename" FROM "auth_permission" INNER JOIN "auth_group_permissions" ON ("auth_permission"."id" = "auth_group_permissions"."permission_id") INNER JOIN "django_content_type" ON ("auth_permission"."content_type_id" = "django_content_type"."id") WHERE "auth_group_permissions"."group_id" IN (SELECT U0."id" FROM "auth_group" U0 INNER JOIN "auth_user_groups" U1 ON (U0."id" = U1."group_id") WHERE U1."user_id" = 2); args=(2,); alias=default
+DEBUG 2025-06-13 13:40:25,164 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:55:25.161964' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:55:25.161964', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:40:25,168 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:40:25,184 utils (0.001) SELECT "transaction"."id", "transaction"."user_id", "transaction"."transaction_type", "transaction"."account_id", "transaction"."amount", "transaction"."description", "transaction"."date", "transaction"."category", "transaction"."receiptUrl", "transaction"."isRecurring", "transaction"."recurringInterval", "transaction"."nextRecurringDate", "transaction"."lastProcessedDate", "transaction"."createdAt" FROM "transaction" WHERE "transaction"."user_id" = 2 ORDER BY "transaction"."date" DESC; args=(2,); alias=default
+DEBUG 2025-06-13 13:40:25,203 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:40:25,207 utils (0.001) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC LIMIT 1000; args=(); alias=default
+DEBUG 2025-06-13 13:40:55,617 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:55:55.613803' AND "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c') LIMIT 21; args=('2025-06-13 07:55:55.613803', 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); alias=default
+DEBUG 2025-06-13 13:40:55,622 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 2 LIMIT 21; args=(2,); alias=default
+DEBUG 2025-06-13 13:40:55,626 utils (0.001) SELECT "django_content_type"."app_label" AS "content_type__app_label", "auth_permission"."codename" AS "codename" FROM "auth_permission" INNER JOIN "auth_user_user_permissions" ON ("auth_permission"."id" = "auth_user_user_permissions"."permission_id") INNER JOIN "django_content_type" ON ("auth_permission"."content_type_id" = "django_content_type"."id") WHERE "auth_user_user_permissions"."user_id" = 2; args=(2,); alias=default
+DEBUG 2025-06-13 13:40:55,640 utils (0.000) SELECT "django_content_type"."app_label" AS "content_type__app_label", "auth_permission"."codename" AS "codename" FROM "auth_permission" INNER JOIN "auth_group_permissions" ON ("auth_permission"."id" = "auth_group_permissions"."permission_id") INNER JOIN "django_content_type" ON ("auth_permission"."content_type_id" = "django_content_type"."id") WHERE "auth_group_permissions"."group_id" IN (SELECT U0."id" FROM "auth_group" U0 INNER JOIN "auth_user_groups" U1 ON (U0."id" = U1."group_id") WHERE U1."user_id" = 2); args=(2,); alias=default
+DEBUG 2025-06-13 13:40:55,648 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."username" = 'admin' LIMIT 21; args=('admin',); alias=default
+DEBUG 2025-06-13 13:40:56,774 utils (0.000) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE "django_session"."session_key" = 'zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c' LIMIT 21; args=('zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c',); alias=default
+DEBUG 2025-06-13 13:40:56,793 utils (0.016) DELETE FROM "django_session" WHERE "django_session"."session_key" IN ('zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c'); args=('zqsdk6hvh3hzpq59n7b9n1yu2m6vl05c',); alias=default
+DEBUG 2025-06-13 13:40:56,805 utils (0.010) UPDATE "auth_user" SET "last_login" = '2025-06-13 07:55:56.794991' WHERE "auth_user"."id" = 1; args=('2025-06-13 07:55:56.794991', 1); alias=default
+DEBUG 2025-06-13 13:40:56,807 utils (0.000) SELECT 1 AS "a" FROM "django_session" WHERE "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4' LIMIT 1; args=(1, 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:40:56,809 utils (0.000) BEGIN; args=None; alias=default
+DEBUG 2025-06-13 13:40:56,812 utils (0.001) INSERT INTO "django_session" ("session_key", "session_data", "expire_date") VALUES ('lsrihsx65ldruxha7qx438okj8gum7v4', '.eJxVjEEOwiAQRe_C2hAYBlpcuvcMBJipVA0kpV0Z765NutDtf-_9lwhxW0vYOi9hJnEWWpx-txTzg-sO6B7rrcnc6rrMSe6KPGiX10b8vBzu30GJvXxrUCM5zDgoZDs5Pym27CyNPqPK5FmDs5wiDRB1tkiAxoBjYDA2JRTvD9dmN54:1uPzGW:QS6PuZADSO_kpgW29n9xheb0xX6NeFZTWBAK1-ig6W4', '2025-06-27 07:55:56.809558'); args=('lsrihsx65ldruxha7qx438okj8gum7v4', '.eJxVjEEOwiAQRe_C2hAYBlpcuvcMBJipVA0kpV0Z765NutDtf-_9lwhxW0vYOi9hJnEWWpx-txTzg-sO6B7rrcnc6rrMSe6KPGiX10b8vBzu30GJvXxrUCM5zDgoZDs5Pym27CyNPqPK5FmDs5wiDRB1tkiAxoBjYDA2JRTvD9dmN54:1uPzGW:QS6PuZADSO_kpgW29n9xheb0xX6NeFZTWBAK1-ig6W4', '2025-06-27 07:55:56.809558'); alias=default
+DEBUG 2025-06-13 13:40:56,824 utils (0.010) COMMIT; args=None; alias=default
+DEBUG 2025-06-13 13:40:56,836 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:55:56.834730' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:55:56.834730', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:40:56,841 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:40:56,850 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:55:56.848927' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:55:56.848927', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:40:56,852 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:40:56,864 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:55:56.862218' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:55:56.862218', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:40:56,867 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:40:56,884 utils (0.000) SELECT "django_admin_log"."id", "django_admin_log"."action_time", "django_admin_log"."user_id", "django_admin_log"."content_type_id", "django_admin_log"."object_id", "django_admin_log"."object_repr", "django_admin_log"."action_flag", "django_admin_log"."change_message", "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined", "django_content_type"."id", "django_content_type"."app_label", "django_content_type"."model" FROM "django_admin_log" INNER JOIN "auth_user" ON ("django_admin_log"."user_id" = "auth_user"."id") LEFT OUTER JOIN "django_content_type" ON ("django_admin_log"."content_type_id" = "django_content_type"."id") WHERE "django_admin_log"."user_id" = 1 ORDER BY "django_admin_log"."action_time" DESC LIMIT 10; args=(1,); alias=default
+DEBUG 2025-06-13 13:41:21,320 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:56:21.317565' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:56:21.317565', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:41:21,323 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:41:21,325 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" ORDER BY "auth_user"."username" ASC; args=(); alias=default
+DEBUG 2025-06-13 13:41:21,329 utils (0.001) SELECT COUNT(*) AS "__count" FROM "fintrack_app_categorytotal"; args=(); alias=default
+DEBUG 2025-06-13 13:41:21,331 utils (0.000) SELECT COUNT(*) AS "__count" FROM "fintrack_app_categorytotal"; args=(); alias=default
+DEBUG 2025-06-13 13:41:21,339 utils (0.000) SELECT "fintrack_app_categorytotal"."id", "fintrack_app_categorytotal"."user_id", "fintrack_app_categorytotal"."category", "fintrack_app_categorytotal"."account_id", "fintrack_app_categorytotal"."transaction_type", "fintrack_app_categorytotal"."total_amount", "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined", "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt", T4."id", T4."password", T4."last_login", T4."is_superuser", T4."username", T4."first_name", T4."last_name", T4."email", T4."is_staff", T4."is_active", T4."date_joined" FROM "fintrack_app_categorytotal" INNER JOIN "auth_user" ON ("fintrack_app_categorytotal"."user_id" = "auth_user"."id") INNER JOIN "account" ON ("fintrack_app_categorytotal"."account_id" = "account"."id") INNER JOIN "auth_user" T4 ON ("account"."user_id" = T4."id") ORDER BY "fintrack_app_categorytotal"."id" DESC; args=(); alias=default
+DEBUG 2025-06-13 13:41:21,383 utils (0.000) SELECT DISTINCT "fintrack_app_categorytotal"."transaction_type" AS "transaction_type" FROM "fintrack_app_categorytotal" ORDER BY 1 ASC; args=(); alias=default
+DEBUG 2025-06-13 13:41:21,450 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:56:21.446804' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:56:21.446804', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:41:21,479 utils (0.002) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:41:23,854 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:56:23.851315' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:56:23.851315', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:41:23,856 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:41:23,858 utils (0.000) SELECT COUNT(*) AS "__count" FROM "transaction"; args=(); alias=default
+DEBUG 2025-06-13 13:41:23,860 utils (0.000) SELECT COUNT(*) AS "__count" FROM "transaction"; args=(); alias=default
+DEBUG 2025-06-13 13:41:23,872 utils (0.001) SELECT "transaction"."id", "transaction"."user_id", "transaction"."transaction_type", "transaction"."account_id", "transaction"."amount", "transaction"."description", "transaction"."date", "transaction"."category", "transaction"."receiptUrl", "transaction"."isRecurring", "transaction"."recurringInterval", "transaction"."nextRecurringDate", "transaction"."lastProcessedDate", "transaction"."createdAt", "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined", "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt", T4."id", T4."password", T4."last_login", T4."is_superuser", T4."username", T4."first_name", T4."last_name", T4."email", T4."is_staff", T4."is_active", T4."date_joined" FROM "transaction" INNER JOIN "auth_user" ON ("transaction"."user_id" = "auth_user"."id") INNER JOIN "account" ON ("transaction"."account_id" = "account"."id") INNER JOIN "auth_user" T4 ON ("account"."user_id" = T4."id") ORDER BY "transaction"."date" DESC, "transaction"."id" DESC; args=(); alias=default
+DEBUG 2025-06-13 13:41:23,959 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:56:23.956592' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:56:23.956592', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:41:23,963 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:42:18,505 utils (0.001) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:57:18.502703' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:57:18.502703', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:42:18,509 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+DEBUG 2025-06-13 13:42:18,531 utils (0.000) SELECT "django_content_type"."id", "django_content_type"."app_label", "django_content_type"."model" FROM "django_content_type" WHERE ("django_content_type"."app_label" = 'fintrack_app' AND "django_content_type"."model" = 'transaction') LIMIT 21; args=('fintrack_app', 'transaction'); alias=default
+DEBUG 2025-06-13 13:42:18,569 utils (0.000) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" ORDER BY "auth_user"."username" ASC; args=(); alias=default
+DEBUG 2025-06-13 13:42:18,579 utils (0.000) SELECT "account"."account_type", "account"."isWallet", "account"."id", "account"."isDefault", "account"."user_id", "account"."name", "account"."account_number", "account"."wallet_number", "account"."balance", "account"."createdAt", "account"."updatedAt" FROM "account" ORDER BY "account"."createdAt" DESC; args=(); alias=default
+DEBUG 2025-06-13 13:42:18,741 utils (0.003) SELECT "django_session"."session_key", "django_session"."session_data", "django_session"."expire_date" FROM "django_session" WHERE ("django_session"."expire_date" > '2025-06-13 07:57:18.728906' AND "django_session"."session_key" = 'lsrihsx65ldruxha7qx438okj8gum7v4') LIMIT 21; args=('2025-06-13 07:57:18.728906', 'lsrihsx65ldruxha7qx438okj8gum7v4'); alias=default
+DEBUG 2025-06-13 13:42:18,771 utils (0.001) SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."id" = 1 LIMIT 21; args=(1,); alias=default
+INFO 2025-06-13 13:46:19,442 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\categorytotal.py changed, reloading.
+INFO 2025-06-13 13:46:20,611 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:40:04,902 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:43:39,154 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:43:40,261 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:43:56,557 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:43:57,738 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:43:59,325 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:44:00,147 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:06,758 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:44:07,927 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:13,690 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:44:15,427 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:18,418 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:19,692 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:42,359 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:43,269 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:44,759 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:45,989 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:48,548 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:49,894 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:52,365 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:53,308 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:44:58,929 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction_category.py changed, reloading.
+INFO 2025-06-13 14:44:59,919 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:45:15,229 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:45:16,198 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:45:19,769 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:45:20,787 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:45:28,395 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:45:29,307 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:48:50,097 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\__init__.py changed, reloading.
+INFO 2025-06-13 14:48:51,067 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:49:07,962 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:52:01,492 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\serializers\account.py changed, reloading.
+INFO 2025-06-13 14:52:02,356 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:52:30,791 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\serializers\account.py changed, reloading.
+INFO 2025-06-13 14:52:31,688 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:52:43,479 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\serializers\account.py changed, reloading.
+INFO 2025-06-13 14:52:44,697 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:55:23,796 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-13 14:55:25,082 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:58:01,499 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:58:02,601 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:58:04,676 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:58:05,824 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:58:09,431 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:58:10,910 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:58:15,123 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:58:16,022 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:59:07,409 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:59:08,425 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:59:17,588 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:59:18,695 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:59:20,220 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:59:21,001 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:59:52,565 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:59:53,552 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 14:59:55,402 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 14:59:56,186 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:00:18,601 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:00:19,923 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:00:34,146 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:00:35,115 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:01:43,111 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:01:43,926 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:01:52,736 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:01:53,624 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:01:58,226 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:01:59,071 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:02:43,141 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:02:44,112 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:03:24,124 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:04:35,813 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:21,187 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:22,019 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:23,432 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:24,388 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:27,957 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:28,836 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:30,261 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:31,597 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:34,136 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:34,914 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:51,181 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:51,968 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:08:57,995 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:08:58,826 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:09:08,674 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:09:09,639 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:09:11,199 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:09:12,177 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:09:18,813 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:09:19,697 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:10:03,940 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:10:05,013 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:11:02,963 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:11:03,738 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:11:13,503 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:11:14,245 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:11:53,041 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:11:54,261 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:11:56,989 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:11:57,876 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:12:14,038 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:12:14,839 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:12:16,542 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:12:17,326 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:12:31,601 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:12:32,335 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:12:45,235 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:12:46,572 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:19:01,009 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\models\transaction.py changed, reloading.
+INFO 2025-06-13 15:19:02,000 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:19:36,732 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\views\transaction.py changed, reloading.
+INFO 2025-06-13 15:19:37,650 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:21:23,735 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 15:22:41,308 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 16:30:59,680 autoreload Watching for file changes with StatReloader
+INFO 2025-06-13 16:33:52,592 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:29:57,846 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:20,338 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:21,244 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:24,058 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:25,144 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:29,295 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:30,456 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:35,851 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:36,914 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:41,374 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:42,367 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:30:56,889 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:30:58,258 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:31:02,962 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:31:03,938 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:31:09,514 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:31:10,494 autoreload Watching for file changes with StatReloader
+INFO 2025-06-15 14:31:19,615 autoreload E:\ESEWA-FINTRACK-FULLSTACK\fintrack_app\admin.py changed, reloading.
+INFO 2025-06-15 14:31:20,657 autoreload Watching for file changes with StatReloader

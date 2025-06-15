@@ -9,6 +9,7 @@ class AccountSerializer(serializers.ModelSerializer):
         
 
 
+
     def validate(self,validated_data):
         errors={}
         if validated_data.get('account_type') is None:
@@ -29,3 +30,6 @@ class AccountSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(errors)
         
         return validated_data
+    
+
+        

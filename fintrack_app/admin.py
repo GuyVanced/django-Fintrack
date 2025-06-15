@@ -1,12 +1,7 @@
 from django.contrib import admin
 # from .models import User, Account, Transaction, Budget
-from .models import  Account, Transaction, Budget,CategoryTotal
+from .models import  Account, Transaction, Budget,Category
 
-
-# class UserAdmin(admin.ModelAdmin):
-#     exclude = ['createdAt', 'updatedAt']
-#     search_fields = ['name']
-#     list_display = [ 'email', 'name']
 
 
 class AccountAdmin(admin.ModelAdmin):
@@ -23,20 +18,10 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ['category', 'transaction_type', 'amount','user','account']
 
 
-# class BudgetAdmin(admin.ModelAdmin):
-#     exclude = ['createdAt', 'updatedAt']
-#     # list_display = ['transaction', 'amount', 'user',]
-#     list_display = ['transaction', 'amount',]
+class CategoryAdmin(admin.ModelAdmin):
+    list_display=['category','user','total_amount']
 
-# class CategoryTotalAdmin(admin.ModelAdmin):
-#     exclude=['']    
-@admin.register(CategoryTotal)
-class CategoryTotalAdmin(admin.ModelAdmin):
-    list_display = ['user', 'category', 'account', 'transaction_type', 'total_amount']
-    list_filter = ['user', 'transaction_type']
-
-# admin.site.register(User, UserAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Transaction, TransactionAdmin)
-# admin.site.register(Budget, BudgetAdmin)
-# admin.site.register(Account_type, Account_typeAdmin)
+admin.site.register(Category,CategoryAdmin)
+

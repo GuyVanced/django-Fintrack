@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from .account import Account
 from django.core.exceptions import ValidationError
-
+from .category import Category
 
 class Transaction(models.Model):
     class Transaction_type(models.TextChoices):
@@ -16,11 +16,13 @@ class Transaction(models.Model):
         choices=Transaction_type.choices, default=Transaction_type.MYEXPENSE)
     account = models.ForeignKey(
         Account, on_delete=models.CASCADE, related_name='transactions')
+    
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name='categories')
+    
     amount = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.CharField(max_length=255, blank=True)
     # date = models.DateTimeField(auto_now=True) ##same like updated_at saves latest time 
     date = models.DateTimeField()
-    category = models.CharField(max_length=50,default=None)
     receiptUrl = models.URLField(blank=True)
     isRecurring = models.BooleanField(default=False)
     recurringInterval = models.CharField(max_length=50, blank=True)
@@ -42,7 +44,8 @@ class Transaction(models.Model):
                 errors['recurringInterval'] = 'recurringInterval is required for recurring transactions'
                 errors['nextRecurringDate'] = 'nextRecurringDate is required for recurring transactions'    
                 
-    
+        if self.user.categories.filter(id=self.category.id).count()==0:
+            errors['category']='Category does not belong to the user.'
 
         if errors:
             raise ValidationError(errors)
@@ -52,7 +55,7 @@ class Transaction(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.category if self.category else f"{self.transaction_type}{self.id}"
+        return self.category.category if self.category else f"{self.transaction_type}{self.id}"
 
     class Meta:
         db_table = 'transaction'
