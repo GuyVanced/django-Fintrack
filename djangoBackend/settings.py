@@ -187,5 +187,12 @@ REST_FRAMEWORK = {
 # }
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL='quester561@gmail.com '
+EMAIL_HOST='smtp.brevo.com '
+EMAIL_PORT= 587
+EMAIL_USE_TLS= True
+EMAIL_HOST_USER='quester561@gmail.com '
+EMAIL_HOST_PASSWORD=' 2323DF#$#df'
+
 SITE_ID=1
 

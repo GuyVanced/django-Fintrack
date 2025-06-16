@@ -23,9 +23,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class BudgetAdmin(admin.ModelAdmin):
-    list_display=['user','transaction','budget_amount']    
+    list_display=['user','budget','budget_amount']    
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Category,CategoryAdmin)
+admin.site.register(Budget,BudgetAdmin)
 

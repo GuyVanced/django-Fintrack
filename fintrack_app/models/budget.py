@@ -1,7 +1,7 @@
 from django.db import models
 # from .user import User
 from django.contrib.auth.models import User
-from .transaction import Transaction
+from .category import Category
 from django.core.exceptions import ValidationError
 from .account import Account
 
@@ -12,8 +12,8 @@ class Budget(models.Model):
         User, on_delete=models.CASCADE, related_name='budgets')
     budget_amount = models.DecimalField(max_digits=20, decimal_places=2)
     # type=models.CharField(max_length=50)
-    transaction = models.OneToOneField(
-        Transaction, on_delete=models.CASCADE, related_name='budget', null=True, blank=True)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name='budgets')
+    is_exceed=models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now=True)
 
     
