@@ -21,7 +21,7 @@ class Budget(models.Model):
     
 
     def __str__(self):
-        return self.transaction.category
+        return self.category.category
 
     class Meta:
         db_table = 'budget'
@@ -31,9 +31,9 @@ class Budget(models.Model):
         super().clean()
         errors = {}
 
-        if self.user.transactions.filter(id=self.transaction.id).count() == 0:
+        if self.user.categories.filter(id=self.category.id).count() == 0:
             # spelling of errors['transaction'] here transaciton spelling should exactly match the field name in the model i.e transaction
-            errors['transaction'] = 'Transaction does not belong to the user.'
+            errors['category'] = 'Category does not belong to the user.'
         if errors:
             raise ValidationError(errors)
 
