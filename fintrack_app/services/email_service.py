@@ -17,6 +17,7 @@ class EmailService:
                  fail_silently=False,
 
             )
+            print(f"email sent to {recipient_email}")
             logger.info(f"Email sent to {recipient_email}")
 
         except Exception as e:
@@ -24,7 +25,7 @@ class EmailService:
 
     @staticmethod
     def send_budget_alert(user,category,total,budget_limit):
-        subject=f"Budget Exceeded for {category.name}"
+        subject=f"Budget Exceeded for {category.category}"
         message=(
             f"Hi {user.first_name or user.username},\n\n"
             f"You've exceeded your budget for the category : {category.category}.\n\n"

@@ -3,6 +3,7 @@ from fintrack_app.models import Transaction
 from django.db import transaction as db_transaction
 import logging
 logger=logging.getLogger(__name__)
+from fintrack_app.services.budget_service import BudgetService
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,6 +31,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         if amount:
             category.total_amount+=amount
         category.save()
+
+        BudgetService.check_and_notify_budget(category)
 
         return super().create(validated_data)
 
@@ -81,7 +84,14 @@ class TransactionSerializer(serializers.ModelSerializer):
             new_category.total_amount+=delta
 
         old_category.save()
-        new_category.save()     
+        new_category.save()    
+
+        BudgetService.check_and_notify_budget(new_category)
+        if category_changed:
+            BudgetService.check_and_notify_budget(old_category)
+
+
+
 
         return super().update(instance,validated_data)
            

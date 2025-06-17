@@ -16,7 +16,10 @@ class CategorySerializer(serializers.ModelSerializer):
             if errors:
                 raise serializers.ValidationError(errors)
             
+            
+            
             return value
+    
             
 
 

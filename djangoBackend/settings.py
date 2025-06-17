@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import ssl
+import certifi
+ssl_context = ssl.create_default_context(cafile=certifi.where())
+
+# import ssl
+# ssl._create_default_https_context = ssl._create_unverified_context
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +58,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+
+    'anymail'
 ]
 
 
@@ -186,13 +196,38 @@ REST_FRAMEWORK = {
 #     'LOGIN_SERIALIZER': 'fintrack_app.serializers.register.CustomLoginSerializer',
 # }
 
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL='quester561@gmail.com '
-EMAIL_HOST='smtp.brevo.com '
-EMAIL_PORT= 587
-EMAIL_USE_TLS= True
-EMAIL_HOST_USER='quester561@gmail.com '
-EMAIL_HOST_PASSWORD=' 2323DF#$#df'
+# EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+# DEFAULT_FROM_EMAIL='FinTrack Alerts <8fba6b001@smtp-brevo.com>'
+# EMAIL_HOST='smtp-relay.brevo.com'
+# EMAIL_PORT= 587
+# EMAIL_USE_TLS= True
+# EMAIL_HOST_USER='8fba6b001@smtp-brevo.com'
+
+# EMAIL_HOST_PASSWORD='***REMOVED***'
+
+# EMAIL_BACKEND='anymail.backends.brevo.EmailBackend'
+EMAIL_BACKEND='anymail.backends.sendgrid.EmailBackend'
+
+ANYMAIL={
+    "SENDGRID_API_KEY":"***REMOVED***",
+}
+
+DEFAULT_FROM_EMAIL="quester561@gmail.com"
+
+
+
+
+
+
+
+# # EMAIL_BACKEND='anymail.backends.smtp.EmailBackend'
+# ANYMAIL={
+#     'BREVO_API_KEY':'***REMOVED***'
+#     # 'BREVO_API_KEY':'***REMOVED***'
+# }
+# # DEFAULT_FROM_EMAIL='quester561@gmail.com'
+# DEFAULT_FROM_EMAIL='FinTrack Alerts <8fba6b001@smtp-brevo.com>'
+
 
 SITE_ID=1
 
