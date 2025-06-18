@@ -1,0 +1,26 @@
+
+import os
+import google.generativeai as genai
+
+# Configure the SDK with your Google API key (set this in your env)
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
+    raise RuntimeError("Missing GOOGLE_API_KEY environment variable")
+genai.configure(api_key=GOOGLE_API_KEY)
+
+def call_llm(prompt: str,
+             model: str = "gemini-flash-2.5",
+             temperature: float = 0.7,
+             candidate_count: int = 1) -> str:
+    """
+    Calls Google Generative AI (Gemini) chat endpoint and returns the assistant's reply.
+    """
+    response = genai.chat.completions.create(
+        model=model,
+        temperature=temperature,
+        candidate_count=candidate_count,
+        # wrap your single prompt as a user message
+        messages=[{"author": "user", "content": prompt}],
+    )
+    # extract the top candidate's content
+    return response.choices[0].message.content
