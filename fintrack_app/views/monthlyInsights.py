@@ -10,7 +10,7 @@ from fintrack_app.models.monthlyInsights import MonthlyInsight
 
 class MonthlyInsightView(APIView):
     """
-    POST /api/ai/insights/
+    POST /api/ai/insights/  
     Body: { "year": 2025, "month": 6 }
     """
     permission_classes = [IsAuthenticated]
@@ -30,10 +30,17 @@ class MonthlyInsightView(APIView):
         # Fetch the saved insight for full data
 
         
-        insight = MonthlyInsight.objects.get(
+        # Safely fetch the first matching insight
+        insight = MonthlyInsight.objects.filter(
             user=request.user,
             period_start__year=year,
             period_start__month=month
-        )
+        ).first()
+
+        if insight is None:
+            return Response({"error": "Insight not found after generation."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
         serializer = MonthlyInsightSerializer(insight)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

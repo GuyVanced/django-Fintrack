@@ -5,4 +5,5 @@ from .budget import BudgetListCreateView, BudgetRetrieveUpdateDestroyView
 # from .user import UserView
 
 from .category import CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView
+from .monthlyInsights import MonthlyInsightView
 
