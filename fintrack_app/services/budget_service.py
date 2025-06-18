@@ -8,6 +8,7 @@ class BudgetService:
         budget=Budget.objects.filter(user=category.user, category=category).first()
 
 
+
         if budget:
             if category.total_amount> budget.budget_amount:
                 # if not budget.is_exceed: #avoid budget emails

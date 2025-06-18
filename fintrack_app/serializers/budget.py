@@ -13,6 +13,11 @@ class BudgetSerializer(serializers.ModelSerializer):
             user=self.context['request'].user
             validated_data['user']=user  ##assign user from context
             return validated_data 
+        
+
+        
+
+        
 
 
 

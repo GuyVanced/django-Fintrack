@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+<<<<<<< HEAD
 from django.contrib.postgres.fields import JSONField
+=======
+# from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
+>>>>>>> dd11285a79811e936023d270bf7fcfb3bad39a61
 
 User = get_user_model()
 

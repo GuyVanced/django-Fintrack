@@ -16,6 +16,8 @@ import ssl
 import certifi
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 
+from celery.schedules import crontab
+
 # import ssl
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -59,7 +61,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
 
-    'anymail'
+    'anymail',
+
+    'django_celery_beat',
+
+
 ]
 
 
@@ -231,3 +237,13 @@ DEFAULT_FROM_EMAIL="quester561@gmail.com"
 
 SITE_ID=1
 
+CELERY_BROKER_URL='redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TASK_SERIALIZER='json'
+
+CELERY_BEAT_SCHEDULE={
+    'reset-budgets-everyday':{
+        'task':'fintrack_app.tasks.resetBudget.reset_monthly_budgets',
+        'schedule':crontab(minute=0,hour=0), #daily at midnight
+    },
+}
