@@ -15,6 +15,7 @@ class Budget(models.Model):
     category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name='budgets')
     is_exceed=models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now=True)
+    last_reset=models.DateTimeField(null=True,blank=True)
 
     
 
