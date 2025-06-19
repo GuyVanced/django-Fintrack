@@ -7,9 +7,12 @@ class ItemSerializer(serializers.Serializer):
     unit_price = serializers.FloatField(allow_null=True)
     total = serializers.FloatField(allow_null=True)
 
+class ReceiptImageUploadSerializer(serializers.Serializer):
+    image = serializers.ImageField()
+
 class ReceiptSerializer(serializers.Serializer):
     merchant = serializers.CharField(allow_null=True)
-    date = serializers.CharField(allow_null=True)  # Format: YYYY-MM-DD
+    date = serializers.CharField(allow_null=True)  # YYYY-MM-DD
     items = serializers.ListField(
         child=ItemSerializer(),
         allow_empty=True
@@ -24,14 +27,13 @@ class ReceiptSerializer(serializers.Serializer):
             "Utilities", "Other"
         ]
     )
-    accuracy = serializers.FloatField(
+    completeness = serializers.FloatField(       # renamed field
         min_value=0,
         max_value=100,
         allow_null=True
     )
-    
 
     def validate_date(self, value):
         if value and not re.match(r'^\d{4}-\d{2}-\d{2}$', value):
-            raise serializers.ValidationError("Date must be in YYYY-MM-DD format")
+            raise serializers.ValidationError("Date must be YYYY-MM-DD")
         return value
