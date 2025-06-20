@@ -11,7 +11,7 @@ class Transaction(models.Model):
         MYINCOME  = 'In', 'INCOME'
         MYEXPENSE = 'Ex', 'EXPENSE'
 
-    user             = models.ForeignKey(
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='transactions'
     )
     transaction_type = models.CharField(

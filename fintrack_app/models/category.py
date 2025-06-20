@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     class TransactionType(models.TextChoices):
-        INCOME  = 'INCOME',  'Income'
-        EXPENSE = 'EXPENSE', 'Expense'
+        INCOME  = 'In',  'Income'
+        EXPENSE = 'Ex', 'Expense'
 
     class NameChoices(models.TextChoices):
         # — Income —
@@ -30,12 +30,11 @@ class Category(models.Model):
     transaction_type = models.CharField(
         max_length=7,
         choices=TransactionType.choices,
-        default=TransactionType.INCOME,   # ← here
+        default=TransactionType.EXPENSE,   # ← here
     )
 
     category         = models.CharField(max_length=20, choices=NameChoices.choices)
-    total_amount     = models.BigIntegerField(default=0)
-
+    total_amount     = models.DecimalField(max_digits=20, decimal_places=2)
     class Meta:
         unique_together = ('user','transaction_type','category')
         ordering        = ['transaction_type','category']

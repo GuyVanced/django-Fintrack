@@ -84,18 +84,18 @@ class TransactionCreateAPIView(APIView):
             )
 
         # lookup or create category
-        category, _ = Category.objects.get_or_create(
-            user=user, category=raw['category']
-        )
-        category_id= category.id
-
+        # category, _ = Category.objects.get_or_create(
+        #     user=user, category=raw['category']
+        # )
+        category = raw['category']
         # parse date into a datetime
         tx_date = datetime.strptime(raw['date'], "%Y-%m-%d")
 
         payload = {
             "user":        request.user.id,         
-            "account":     raw["account_id"],        
-            "category":    category_id,              
+            "account":     raw["account_id"], 
+            "transaction_type" : "Ex",    
+            "category":    category,              
             "amount":      raw["total"],             
             "description": raw.get("description", ""),
             "date":        raw["date"],              
@@ -123,7 +123,7 @@ class TransactionCreateAPIView(APIView):
             "description":    tx.description,
             "date":        tx.date.isoformat(),
             "amount":      str(tx.amount),
-            "category":    tx.category.category,
+            "category":    tx.category,
             "receiptPath":  tx.receiptPath,
         }, status=status.HTTP_201_CREATED)
     

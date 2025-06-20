@@ -8,11 +8,14 @@ class CategorySerializer(serializers.ModelSerializer):
     )
     # we’ll override the default choices in __init__
     category = serializers.ChoiceField(choices=[])
-
+    total_amount = serializers.DecimalField(
+        max_digits=20, decimal_places=2, read_only=False
+    )
     class Meta:
         model = Category
         fields = ['id', 'transaction_type', 'category', 'total_amount']
-        read_only_fields = ['id', 'total_amount']
+        read_only_fields = ['id']
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
