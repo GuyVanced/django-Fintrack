@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from fintrack_app.services.ocr.ocr_client import parse_receipt
-from fintrack_app.serializers.receipt import (
+from fintrack_app.serializers.receiptSR import (
     ReceiptImageUploadSerializer,
     ReceiptSerializer
 )

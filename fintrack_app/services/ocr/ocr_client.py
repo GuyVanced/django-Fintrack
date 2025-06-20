@@ -1,105 +1,81 @@
+import json
 import os
-import uuid
-from datetime import datetime
+import google.generativeai as genai
 
-from django.conf import settings
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+# 1. Configure the SDK once, at import time, from a dedicated env var
+genai.configure(api_key=os.getenv('GOOGLE_API_KEY_OCR'))
 
-from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
+# 2. Updated prompt: valid JSON schema (commas, quotes), renamed "accuracy" → "completeness"
+PROMPT = """
+You are a JSON-output-only receipt-parsing assistant. Output only the raw JSON—no markdown fences or extra text.
+Given the receipt image below, return exactly this schema:
+{
+  "merchant": "string",
+  "date": "YYYY-MM-DD",
+  "items": [
+    {
+      "name": "string",
+      "quantity": number,
+      "unit_price": number,
+      "total": number
+    }
+  ],
+  "total": number,
+  "category": "string",
+  "completeness": number
+  "description" : "string"
+}
+Where:
+ - `completeness` = % of these 5 fields actually extracted (merchant,date,items,total,category).
+ - If any field is missing or you are not confident about the value, use `null` (or empty list for `items`).
+ - `category` must be one of:
+   ["Food","Income","Housing","Groceries","Electronics","Transportation",
+    "Dining","Healthcare","Shopping","Entertainment","Utilities","Other"]
+ - 'description' should only be around 2-3 words (related to merchant/items/category)
+"""
 
-from fintrack_app.services.ocr.ocr_client import parse_receipt
-from fintrack_app.serializers.receipt import (
-    ReceiptImageUploadSerializer,
-    ReceiptSerializer
-)
-from fintrack_app.models.transaction import Transaction
-from fintrack_app.models.account import Account
-from fintrack_app.models.category import Category
+def clean_markdown_fences(text: str) -> str:
+    """
+    Strip leading/trailing ```json fences if the model wrapped its output.
+    """
+    txt = text.strip()
+    if txt.startswith("```json"):
+        lines = [ln for ln in txt.splitlines() if ln.strip() not in ("```json", "```")]
+        return "\n".join(lines).strip()
+    if txt.startswith("```") and txt.endswith("```"):
+        return txt.strip("`").strip()
+    return txt
 
-class OCRReceiptAndCreateTransaction(APIView):
-    parser_classes = [MultiPartParser, FormParser]
-    permission_classes = [IsAuthenticated]
+def parse_receipt(image_bytes: bytes, mime_type: str) -> dict:
+    """
+    1) Send prompt + image to Gemini Vision
+    2) Clean fences, parse JSON
+    3) Compute 'completeness' = (# of non-null fields) / 5 * 100
+    """
+    model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
 
-    def post(self, request):
-        user = request.user
+    # pass prompt and image as separate positional args
+    response = model.generate_content(
+        PROMPT,
+        {"mime_type": mime_type, "data": image_bytes}
+    )
 
-        # 1) Validate image upload
-        img_ser = ReceiptImageUploadSerializer(data=request.data)
-        img_ser.is_valid(raise_exception=True)
-        image_file = img_ser.validated_data['image']
+    cleaned = clean_markdown_fences(response.text)
+    data = json.loads(cleaned)
 
-        # 2) Save file under MEDIA_ROOT/images with a unique name
-        ext = os.path.splitext(image_file.name)[1]
-        unique_name = f"{user.id}_{uuid.uuid4().hex}{ext}"
-        save_path = os.path.join("images", unique_name)
-        default_storage.save(save_path, ContentFile(image_file.read()))
-        receipt_url = default_storage.url(save_path)
-
-        # 3) Run OCR
-        mime = image_file.content_type
-        image_file.seek(0)  # reset read pointer
-        ocr_data = parse_receipt(image_file.read(), mime)
-
-        # 4) Validate OCR output
-        rec_ser = ReceiptSerializer(data=ocr_data)
-        rec_ser.is_valid(raise_exception=True)
-        data = rec_ser.validated_data
-
-        # 5) Determine or override date
-        date_str = data.get('date')
-        if date_str:
-            tx_date = datetime.strptime(date_str, "%Y-%m-%d")
+    # compute completeness
+    expected_fields = ["merchant", "date", "items", "total", "category"]
+    found = 0
+    for key in expected_fields:
+        val = data.get(key)
+        if val is None:
+            continue
+        if key == "items":
+            if isinstance(val, list) and len(val) > 0:
+                found += 1
         else:
-            return Response(
-                {"detail": "No date found in OCR output; please supply 'date' field."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            if val not in ("", []):
+                found += 1
 
-        # 6) Lookup Account (must come in request data)
-        acct_id = request.data.get('account_id')
-        if not acct_id:
-            return Response({"detail": "Missing 'account_id' in request."},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
-            account = Account.objects.get(id=acct_id, user=user)
-        except Account.DoesNotExist:
-            return Response({"detail": "Account not found or not yours."},
-                            status=status.HTTP_404_NOT_FOUND)
-
-        # 7) Lookup Category (exact one, guaranteed valid by OCR + serializer)
-        category_name = data['category']
-        try:
-            category = Category.objects.get(user=user, category__iexact=category_name)
-        except Category.DoesNotExist:
-            return Response(
-                {"detail": f"Category '{category_name}' not found for this user."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # 8) Create the Transaction
-        tx = Transaction.objects.create(
-            user=user,
-            account=account,
-            category=category,
-            amount=data['total'],
-            description=data.get('merchant') or "",
-            date=tx_date,
-            receiptUrl=receipt_url
-            # transaction_type defaults to EXPENSE
-        )
-
-        # 9) Return the serialized transaction
-        return Response({
-            "id": tx.id,
-            "merchant": tx.description,
-            "date": tx.date.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "amount": str(tx.amount),
-            "category": tx.category.category,
-            "completeness": data['completeness'],
-            "receiptUrl": receipt_url
-        }, status=status.HTTP_201_CREATED)
+    data["completeness"] = round(found / len(expected_fields) * 100, 2)
+    return data

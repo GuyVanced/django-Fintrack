@@ -6,5 +6,5 @@ from .budget import BudgetListCreateView, BudgetRetrieveUpdateDestroyView
 
 from .category import CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView
 from .monthlyInsights import MonthlyInsightView
-from .ocrReceipt import ReceiptUploadAPIView
+from .receiptView import ReceiptUploadAPIView
 
