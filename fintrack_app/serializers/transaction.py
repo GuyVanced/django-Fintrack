@@ -1,107 +1,90 @@
+# fintrack_app/serializers/transaction.py
+
 from rest_framework import serializers
-from fintrack_app.models import Transaction
-from django.db import transaction as db_transaction
-import logging
-logger=logging.getLogger(__name__)
-from fintrack_app.services.budget_service import BudgetService
+from fintrack_app.models import Transaction, Category as UserCategory
 
 class TransactionSerializer(serializers.ModelSerializer):
+    transaction_type = serializers.ChoiceField(
+        choices=Transaction.Transaction_type.choices
+    )
+    # start with no choices; we'll populate in __init__
+    category = serializers.ChoiceField(choices=[])
+
     class Meta:
         model = Transaction
         fields = [
-            'id', 'user', 'transaction_type', 'account', 'amount', 'description', 'date',
-            'category', 'receiptPath', 'isRecurring', 'recurringInterval',
-            'nextRecurringDate', 'lastProcessedDate'
+            'id',
+            'transaction_type',
+            'account',
+            'category',
+            'amount',
+            'description',
+            'date',
+            'receiptPath',
+            'isRecurring',
+            'recurringInterval',
+            'nextRecurringDate',
+            'lastProcessedDate',
         ]
+        read_only_fields = ['id']
 
-    @db_transaction.atomic
-    def create(self, validated_data):
-        transaction_type = serializers.ChoiceField(
-            choices=Transaction.Transaction_type.choices,
-            default=Transaction.Transaction_type.MYEXPENSE,
-            required=False
-        )
-        account = validated_data['account']
-        amount = validated_data['amount']
-        category = validated_data['category']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        # Update account balance
-        if transaction_type == Transaction.Transaction_type.MYINCOME:
-            account.balance += amount
-        elif transaction_type == Transaction.Transaction_type.MYEXPENSE:
-            account.balance -= amount
-        account.save()
+        # figure out which transaction_type is selected
+        tx_type = None
+        req = self.context.get('request')
+        if req is not None and hasattr(req, 'data') and isinstance(req.data, dict):
+            tx_type = req.data.get('transaction_type')
+        elif self.instance is not None:
+            tx_type = self.instance.transaction_type
 
-        if amount:
-            category.total_amount+=amount
-        category.save()
+        # build allowed name sets
+        income_names = {
+            UserCategory.NameChoices.SALARY,
+            UserCategory.NameChoices.INVESTMENTS,
+            UserCategory.NameChoices.FREELANCE,
+            UserCategory.NameChoices.OTHERS,
+        }
+        all_names = {c.value for c in UserCategory.NameChoices}
+        expense_names = all_names - income_names
 
-        BudgetService.check_and_notify_budget(category)
-
-        return super().create(validated_data)
-
-    @db_transaction.atomic
-    def update(self,instance,validated_data):
-        old_type=instance.transaction_type
-        old_amount=instance.amount
-        old_account=instance.account
-        old_category=instance.category
-
-        new_type=validated_data.get('transaction_type',old_type)
-        new_amount=validated_data.get('amount',old_amount)
-        new_account=validated_data.get('account',old_account)
-        new_category=validated_data.get('category',old_category)
-
-
-        type_changed=old_type!=new_type
-        account_changed=old_account!=new_account
-        category_changed=old_category!=new_category
-
-        if type_changed or account_changed:
-            if old_type ==Transaction.Transaction_type.MYINCOME:
-                old_account.balance-=old_amount
-            else:
-                old_account.balance+=old_amount
-            old_account.save()   
-
-            if new_type==Transaction.Transaction_type.MYINCOME:
-                new_account.balance+=new_amount
-            else:
-                new_account.balance-=new_amount
-            new_account.save()         
+        if tx_type == Transaction.Transaction_type.MYINCOME:
+            allowed = income_names
+        elif tx_type == Transaction.Transaction_type.MYEXPENSE:
+            allowed = expense_names
         else:
-            #just update the difference
-            delta=new_amount-old_amount
-            if new_type==Transaction.Transaction_type.MYINCOME:
-                new_account.balance+=delta
-            else:
-                new_account.balance-=delta
+            # if no type chosen yet, show all
+            allowed = income_names | expense_names
 
-            new_account.save()    
+        # apply to the category field
+        self.fields['category'].choices = [(v, v) for v in sorted(allowed)]
 
+    def validate(self, data):
+        """
+        Ensure that the chosen category name matches the transaction_type.
+        """
+        tx_type  = data.get('transaction_type')
+        cat_name = data.get('category')
 
-        if category_changed:
-            old_category.total_amount-=old_amount
-            new_category.total_amount+=new_amount   
+        income_names = {
+            UserCategory.NameChoices.SALARY,
+            UserCategory.NameChoices.INVESTMENTS,
+            UserCategory.NameChoices.FREELANCE,
+            UserCategory.NameChoices.OTHERS,
+        }
+        all_names = {c.value for c in UserCategory.NameChoices}
+        expense_names = all_names - income_names
+
+        if tx_type == Transaction.Transaction_type.MYINCOME:
+            if cat_name not in income_names:
+                raise serializers.ValidationError({
+                    'category': f"'{cat_name}' is not a valid Income category."
+                })
         else:
-            delta=new_amount-old_amount
-            new_category.total_amount+=delta
+            if cat_name not in expense_names:
+                raise serializers.ValidationError({
+                    'category': f"'{cat_name}' is not a valid Expense category."
+                })
 
-        old_category.save()
-        new_category.save()    
-
-        BudgetService.check_and_notify_budget(new_category)
-        if category_changed:
-            BudgetService.check_and_notify_budget(old_category)
-
-
-
-
-        return super().update(instance,validated_data)
-           
-
-
-
-
-
-
+        return data
