@@ -27,7 +27,12 @@ class Category(models.Model):
         OTHER         = 'Other',         'Other'
 
     user             = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
-    transaction_type = models.CharField(max_length=7, choices=TransactionType.choices)
+    transaction_type = models.CharField(
+        max_length=7,
+        choices=TransactionType.choices,
+        default=TransactionType.INCOME,   # ← here
+    )
+
     category         = models.CharField(max_length=20, choices=NameChoices.choices)
     total_amount     = models.BigIntegerField(default=0)
 
