@@ -149,11 +149,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = True  # Keep this True to enable timezone-aware datetimes
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -237,13 +239,27 @@ DEFAULT_FROM_EMAIL="quester561@gmail.com"
 
 SITE_ID=1
 
-CELERY_BROKER_URL='redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT=['json']
-CELERY_TASK_SERIALIZER='json'
+# Celery Settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Add this
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'  # Add this
+# CELERY_TIMEZONE = 'UTC'  # Match your Django timezone
+CELERY_TIMEZONE = 'Asia/Kathmandu'
 
-CELERY_BEAT_SCHEDULE={
-    'reset-budgets-everyday':{
-        'task':'fintrack_app.tasks.resetBudget.reset_monthly_budgets',
-        'schedule':crontab(minute=0,hour=0), #daily at midnight
+
+
+
+
+# Celery Beat Schedule
+CELERY_BEAT_SCHEDULE = {
+    'reset-budgets-everyday': {
+        'task': 'reset_monthly_budgets',  # Match the task name from @shared_task
+        'schedule': crontab(minute='0', hour='0'),  # Midnight every day
+        'schedule': crontab(minute='*'), #every minute 
+        'options': {
+            'expires': 50,  # Task expires after 1 hour
+        }
     },
 }
