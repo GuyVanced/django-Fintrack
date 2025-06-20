@@ -10,13 +10,17 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = [
             'id', 'user', 'transaction_type', 'account', 'amount', 'description', 'date',
-            'category', 'receiptUrl', 'isRecurring', 'recurringInterval',
+            'category', 'receiptPath', 'isRecurring', 'recurringInterval',
             'nextRecurringDate', 'lastProcessedDate'
         ]
 
     @db_transaction.atomic
     def create(self, validated_data):
-        transaction_type = validated_data['transaction_type']
+        transaction_type = serializers.ChoiceField(
+            choices=Transaction.Transaction_type.choices,
+            default=Transaction.Transaction_type.MYEXPENSE,
+            required=False
+        )
         account = validated_data['account']
         amount = validated_data['amount']
         category = validated_data['category']

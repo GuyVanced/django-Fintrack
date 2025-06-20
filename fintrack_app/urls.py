@@ -1,6 +1,6 @@
 from django.urls import path,include
 # from .views import UserView, AccountListView,AccountRetrieveUpdateDestroyView
-from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptUploadAPIView
+from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptOCRAPIView, TransactionCreateAPIView
 
 urlpatterns = [
     path('dj-rest-auth/',include('dj_rest_auth.urls')),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('category/<int:id>/',CategoryRetrieveUpdateDestroyAPIView.as_view(),name='transaction_category'),
     
     path('ai/insights/',MonthlyInsightView.as_view(),name='monthly_insights'),
-    path("ai/receipt/", ReceiptUploadAPIView.as_view(), name="upload_receipt"),
+    path("ai/receipt/process", ReceiptOCRAPIView.as_view(), name="process_receipt"),
+    path("ai/receipt/create", TransactionCreateAPIView.as_view(), name="create_from_receipt"),
 
     ]

@@ -23,7 +23,7 @@ class Transaction(models.Model):
     description = models.CharField(max_length=255, blank=True)
     # date = models.DateTimeField(auto_now=True) ##same like updated_at saves latest time 
     date = models.DateTimeField()
-    receiptUrl = models.URLField(blank=True)
+    receiptPath = models.CharField(blank=True)
     isRecurring = models.BooleanField(default=False)
     recurringInterval = models.CharField(max_length=50, blank=True)
     nextRecurringDate = models.DateTimeField(blank=True, null=True)

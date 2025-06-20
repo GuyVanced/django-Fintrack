@@ -53,11 +53,15 @@ def parse_receipt(image_bytes: bytes, mime_type: str) -> dict:
     3) Compute 'completeness' = (# of non-null fields) / 5 * 100
     """
     model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
-
+    
+    multimodal_input = [
+    PROMPT,
+    {"mime_type": mime_type, "data": image_bytes}
+    ]
+    
     # pass prompt and image as separate positional args
     response = model.generate_content(
-        PROMPT,
-        {"mime_type": mime_type, "data": image_bytes}
+        multimodal_input
     )
 
     cleaned = clean_markdown_fences(response.text)

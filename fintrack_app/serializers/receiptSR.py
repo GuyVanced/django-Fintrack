@@ -32,6 +32,7 @@ class ReceiptSerializer(serializers.Serializer):
         max_value=100,
         allow_null=True
     )
+    description = serializers.CharField(allow_null=True)
 
     def validate_date(self, value):
         if value and not re.match(r'^\d{4}-\d{2}-\d{2}$', value):
