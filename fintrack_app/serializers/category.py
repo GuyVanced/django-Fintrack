@@ -17,12 +17,16 @@ class CategorySerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # figure out what type the user (or instance) has
+        # 1) try POST/PUT payload
+        req = self.context.get('request', None)
         tx_type = None
-        if self.context.get('request') and self.context['request'].data:
-            tx_type = self.context['request'].data.get('transaction_type')
-        elif self.instance:
-            tx_type = self.instance.transaction_type
+        if req is not None:
+            # for a POST/PUT call
+            if hasattr(req, 'data') and isinstance(req.data, dict):
+                tx_type = req.data.get('transaction_type')
+            # for a GET-list AJAX call
+            if tx_type is None:
+                tx_type = req.query_params.get('transaction_type')
 
         # build two sets of allowed names
         income_set = {
