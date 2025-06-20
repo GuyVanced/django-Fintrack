@@ -9,45 +9,35 @@ class TransactionSerializer(serializers.ModelSerializer):
     transaction_type = serializers.ChoiceField(
         choices=Transaction.Transaction_type.choices
     )
-    # category choices will be set dynamically in __init__
     category = serializers.ChoiceField(choices=[])
 
     class Meta:
         model = Transaction
         fields = [
-            'id',
-            'transaction_type',
-            'account',
-            'category',
-            'amount',
-            'description',
-            'date',
-            'receiptPath',
-            'isRecurring',
-            'recurringInterval',
-            'nextRecurringDate',
-            'lastProcessedDate',
+            'id', 'transaction_type', 'account', 'category',
+            'amount', 'description', 'date', 'receiptPath',
+            'isRecurring', 'recurringInterval',
+            'nextRecurringDate', 'lastProcessedDate',
         ]
         read_only_fields = ['id']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        request = self.context.get('request', None)
+        request = self.context.get('request')
 
-        # 1) filter account queryset to the authenticated user's accounts
+        # limit account dropdown to only the user's accounts
         if request and request.user.is_authenticated:
             self.fields['account'].queryset = Account.objects.filter(user=request.user)
         else:
             self.fields['account'].queryset = Account.objects.none()
 
-        # 2) determine selected transaction_type for category filtering
+        # determine transaction_type for filtering categories
         tx_type = None
         if request and hasattr(request, 'data') and isinstance(request.data, dict):
             tx_type = request.data.get('transaction_type')
         elif self.instance:
             tx_type = self.instance.transaction_type
 
-        # 3) build allowed name sets
         income_names = {
             UserCategory.NameChoices.SALARY,
             UserCategory.NameChoices.INVESTMENTS,
@@ -62,10 +52,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         elif tx_type == Transaction.Transaction_type.MYEXPENSE:
             allowed = expense_names
         else:
-            # if no type chosen, show all
             allowed = income_names | expense_names
 
-        # 4) set category dropdown choices
         self.fields['category'].choices = [(v, v) for v in sorted(allowed)]
 
     def validate(self, data):
@@ -82,52 +70,40 @@ class TransactionSerializer(serializers.ModelSerializer):
         expense_names = all_names - income_names
 
         if tx_type == Transaction.Transaction_type.MYINCOME and cat_name not in income_names:
-            raise serializers.ValidationError({
-                'category': f"'{cat_name}' is not a valid Income category."
-            })
+            raise serializers.ValidationError({'category': f"'{cat_name}' invalid for In"})
         if tx_type == Transaction.Transaction_type.MYEXPENSE and cat_name not in expense_names:
-            raise serializers.ValidationError({
-                'category': f"'{cat_name}' is not a valid Expense category."
-            })
-
+            raise serializers.ValidationError({'category': f"'{cat_name}' invalid for Ex"})
         return data
 
     @db_transaction.atomic
     def create(self, validated_data):
-        # pop user if passed in, fallback to request user
+        # ** pop user FIRST to avoid duplicate kwarg **
         user = validated_data.pop('user', self.context['request'].user)
+
         tx_type  = validated_data.pop('transaction_type')
         cat_name = validated_data.pop('category')
         account  = validated_data.pop('account')
         amount   = validated_data.pop('amount')
 
-        # map Transaction type to UserCategory transaction_type
-        cat_type = (
-            UserCategory.TransactionType.INCOME
-            if tx_type == Transaction.Transaction_type.MYINCOME
-            else UserCategory.TransactionType.EXPENSE
-        )
-
-        # get or create the per-user Category record
+        # get or create per-user Category
         cat_obj, _ = UserCategory.objects.get_or_create(
             user=user,
-            transaction_type=cat_type,
+            transaction_type=tx_type,
             category=cat_name,
             defaults={'total_amount': 0}
         )
-
-        # update account balance
+        # update balances
         if tx_type == Transaction.Transaction_type.MYINCOME:
             account.balance += amount
         else:
             account.balance -= amount
         account.save()
 
-        # update category total_amount
+        # update category total
         cat_obj.total_amount += amount
         cat_obj.save()
 
-        # create the Transaction record
+        # now create the Transaction (user only passed once)
         tx = Transaction.objects.create(
             user=user,
             transaction_type=tx_type,
@@ -137,7 +113,6 @@ class TransactionSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
-        # budget notification
         BudgetService.check_and_notify_budget(cat_obj)
         return tx
 
@@ -145,14 +120,14 @@ class TransactionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user     = self.context['request'].user
         old_type = instance.transaction_type
-        old_name = instance.category
+        old_cat  = instance.category
         old_amt  = instance.amount
         old_acc  = instance.account
 
         new_type = validated_data.get('transaction_type', old_type)
-        new_name = validated_data.get('category',        old_name)
-        new_amt  = validated_data.get('amount',          old_amt)
-        new_acc  = validated_data.get('account',         old_acc)
+        new_cat  = validated_data.get('category', old_cat)
+        new_amt  = validated_data.get('amount', old_amt)
+        new_acc  = validated_data.get('account', old_acc)
 
         # reverse old account balance
         if old_type == Transaction.Transaction_type.MYINCOME:
@@ -168,59 +143,44 @@ class TransactionSerializer(serializers.ModelSerializer):
             new_acc.balance -= new_amt
         new_acc.save()
 
-        # helper to map transaction type to UserCategory.TransactionType
-        def map_cat_type(t):
-            return (
-                UserCategory.TransactionType.INCOME
-                if t == Transaction.Transaction_type.MYINCOME
-                else UserCategory.TransactionType.EXPENSE
-            )
-
-        old_cat_type = map_cat_type(old_type)
-        new_cat_type = map_cat_type(new_type)
-
-        if new_type != old_type or new_name != old_name:
-            # decrement old category total
-            old_cat_obj = UserCategory.objects.get(
+        # adjust category totals
+        if new_type != old_type or new_cat != old_cat:
+            old_obj = UserCategory.objects.get(
                 user=user,
-                transaction_type=old_cat_type,
-                category=old_name
+                transaction_type=old_type,
+                category=old_cat
             )
-            old_cat_obj.total_amount -= old_amt
-            old_cat_obj.save()
+            old_obj.total_amount -= old_amt
+            old_obj.save()
 
-            # increment or create new category total
-            new_cat_obj, _ = UserCategory.objects.get_or_create(
+            new_obj, _ = UserCategory.objects.get_or_create(
                 user=user,
-                transaction_type=new_cat_type,
-                category=new_name,
+                transaction_type=new_type,
+                category=new_cat,
                 defaults={'total_amount': 0}
             )
-            new_cat_obj.total_amount += new_amt
-            new_cat_obj.save()
-            target = new_name
+            new_obj.total_amount += new_amt
+            new_obj.save()
+            target = new_cat
         else:
-            # same category: adjust by delta
-            delta = new_amt - old_amt
-            cat_obj = UserCategory.objects.get(
+            obj = UserCategory.objects.get(
                 user=user,
-                transaction_type=old_cat_type,
-                category=old_name
+                transaction_type=old_type,
+                category=old_cat
             )
-            cat_obj.total_amount += delta
-            cat_obj.save()
-            target = old_name
+            obj.total_amount += (new_amt - old_amt)
+            obj.save()
+            target = old_cat
 
-        # budget re-check
         BudgetService.check_and_notify_budget(
             UserCategory.objects.get(
                 user=user,
-                transaction_type=new_cat_type,
+                transaction_type=new_type,
                 category=target
             )
         )
 
-        # update transaction fields
+        # apply remaining fields
         for f in [
             'description','date','receiptPath',
             'isRecurring','recurringInterval',
@@ -234,5 +194,4 @@ class TransactionSerializer(serializers.ModelSerializer):
         instance.category         = target
         instance.amount           = new_amt
         instance.save()
-
         return instance
