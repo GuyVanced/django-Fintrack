@@ -1,61 +1,57 @@
+# fintrack_app/models/account.py
+
 from django.db import models
 from django.contrib.auth.models import User
-# from .user import User
-from django.core.exceptions import ValidationError
 
+class Account(models.Model):
+    class AccountType(models.TextChoices):
+        CHECKING   = 'CK', 'Checking'
+        SAVINGS    = 'SV', 'Savings'
+        CREDIT     = 'CR', 'Credit Card'
+        CASH       = 'CA', 'Cash'
+        INVESTMENT = 'IN', 'Investment'
 
-class Account_type(models.Model):
-    account_type = models.CharField(max_length=50)
-    isWallet = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-
-class Account(Account_type, models.Model):
-
-    id = models.AutoField(primary_key=True)
-    isDefault = models.BooleanField(default=False)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='accounts')
-    name = models.CharField(max_length=100)
-    account_number = models.BigIntegerField(unique=True, null=True, blank=True)
-    wallet_number = models.BigIntegerField(unique=True, null=True, blank=True)
+        User,
+        on_delete=models.CASCADE,
+        related_name='accounts'
+    )
+    account_type = models.CharField(
+        max_length=2,
+        choices=AccountType.choices,
+        help_text="Select the type of account."
+    )
+    name = models.CharField(
+        max_length=100,
+        help_text="A friendly name for this account (e.g. “Main Checking”)."
+    )
+    
+    account_number = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Optional account number (if applicable)."
+    )
+    institution = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Optional financial institution name."
+    )
 
     balance = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0.00)
-    createdAt = models.DateTimeField(auto_now=True)
-    updatedAt = models.DateTimeField(auto_now_add=True)
-    description = None
-
-    def __str__(self):
-        return self.name
+        max_digits=20,
+        decimal_places=2,
+        default=0,
+        help_text="Current balance of the account."
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'account'
-        ordering = ['-createdAt']
+        ordering = ['-created_at']
+        unique_together = [['user', 'name']]
 
-    def clean(self):
-        super().clean()
-        errors = {}
-
-        if self.account_type is None:
-            errors['account_type'] = 'account_type is required.'
-        else:
-            if self.isWallet:
-                if not self.wallet_number:
-                    errors['wallet_number'] = 'wallet_number is required for wallet accounts'
-                if self.account_number:
-                    errors['account_number'] = 'account_number must be empty for wallet accounts'
-            else:
-                if not self.account_number:
-                    errors['account_number'] = 'account_number is required for non-wallet accounts'
-                if self.wallet_number:
-                    errors['wallet_number'] = 'wallet_number must be empty for non-wallet accounts'
-
-        if errors:
-            raise ValidationError(errors)
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return self.name

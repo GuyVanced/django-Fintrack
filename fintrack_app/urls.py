@@ -1,6 +1,6 @@
 from django.urls import path,include
 # from .views import UserView, AccountListView,AccountRetrieveUpdateDestroyView
-from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptOCRAPIView, TransactionCreateAPIView
+from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptOCRAPIView, TransactionCreateAPIView, MasterCategoryListCreateView
 
 urlpatterns = [
     path('dj-rest-auth/',include('dj_rest_auth.urls')),
@@ -18,5 +18,10 @@ urlpatterns = [
     path('ai/insights/',MonthlyInsightView.as_view(),name='monthly_insights'),
     path("ai/receipt/process", ReceiptOCRAPIView.as_view(), name="process_receipt"),
     path("ai/receipt/create", TransactionCreateAPIView.as_view(), name="create_from_receipt"),
+    path(
+        'master-categories/',
+        MasterCategoryListCreateView.as_view(),
+        name='master-category-list-create'
+    ),
 
     ]

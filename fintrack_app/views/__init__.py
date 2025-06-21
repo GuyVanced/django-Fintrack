@@ -7,4 +7,6 @@ from .budget import BudgetListCreateView, BudgetRetrieveUpdateDestroyView
 from .category import CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView
 from .monthlyInsights import MonthlyInsightView
 from .receiptView import ReceiptOCRAPIView, TransactionCreateAPIView
+from .master_category import MasterCategoryListCreateView
+
 

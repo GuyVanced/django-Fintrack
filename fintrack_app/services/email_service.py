@@ -25,10 +25,10 @@ class EmailService:
 
     @staticmethod
     def send_budget_alert(user,category,total,budget_limit):
-        subject=f"Budget Exceeded for {category.category}"
+        subject=f"Budget Exceeded for {category.master_category.name}"
         message=(
             f"Hi {user.first_name or user.username},\n\n"
-            f"You've exceeded your budget for the category : {category.category}.\n\n"
+            f"You've exceeded your budget for the category : {category.master_category.name}.\n\n"
             f"Total spent : {total}\n\n"
             f"Budget limit: {budget_limit}\n\n"
             f"Take action to stay on track with your goals!"

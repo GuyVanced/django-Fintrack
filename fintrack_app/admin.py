@@ -1,32 +1,70 @@
 from django.contrib import admin
-# from .models import User, Account, Transaction, Budget
-from .models import  Account, Transaction, Budget,Category
+from .models import (
+    Account,
+    Transaction,
+    Budget,
+    UserCategory,
+    MasterCategory,
+)
 
-
-
+@admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
-    exclude = ['createdAt', 'updatedAt']
-    # list_display = ['name', 'account_type',
-    #                 'account_number', 'wallet_number', 'user']
-    list_display = ['name', 'account_type',
-                    'account_number', 'wallet_number']
+    # remove wallet_number, add balance and institution
+    list_display = [
+        'user',
+        'name',
+        'account_type',
+        'balance',
+        'account_number',
+        'institution',
+    ]
+    # if you want to hide created_at/updated_at in the form:
+    exclude = ['created_at', 'updated_at']
 
-
+@admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    exclude = ['createdAt', 'updatedAt']
-    # list_display = ['category', 'transaction_type', 'amount', 'user']
-    list_display = ['category', 'transaction_type', 'amount','user','account']
+    exclude = ['createdAt']
+    list_display = [
+        'id',
+        'user',
+        'transaction_type',
+        'category',
+        'amount',
+        'account',
+        'date',
+        'isRecurring',
+    ]
+    list_filter = ['transaction_type', 'date']
+    search_fields = ['description']
 
+@admin.register(UserCategory)
+class UserCategoryAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'master_category',
+        'total_amount',
+    ]
+    list_filter = ['master_category__transaction_type']
+    search_fields = ['master_category__name']
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display=['category','user','total_amount']
-
-
+@admin.register(Budget)
 class BudgetAdmin(admin.ModelAdmin):
-    list_display=['user','budget_amount']    
+    exclude = ['createdAt', 'last_reset']
+    list_display = [
+        'user',
+        'category',
+        'budget_amount',
+        'is_exceed',
+    ]
+    list_filter = ['is_exceed']
+    search_fields = ['category__master_category__name']
 
-admin.site.register(Account, AccountAdmin)
-admin.site.register(Transaction, TransactionAdmin)
-admin.site.register(Category,CategoryAdmin)
-admin.site.register(Budget,BudgetAdmin)
-
+@admin.register(MasterCategory)
+class MasterCategoryAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'transaction_type',
+        'name',
+    ]
+    list_filter = ['transaction_type']
+    search_fields = ['name']

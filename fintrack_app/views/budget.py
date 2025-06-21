@@ -1,36 +1,26 @@
-from fintrack_app.serializers.budget import BudgetSerializer
+# fintrack_app/views/budget.py
+
+from rest_framework import generics
 from fintrack_app.models import Budget
-
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-from django.utils.timezone import now
+from fintrack_app.serializers.budget import BudgetSerializer
 
 
-class BudgetListCreateView(ListCreateAPIView):
-    serializer_class=BudgetSerializer
-    
+class BudgetListCreateView(generics.ListCreateAPIView):
+    serializer_class = BudgetSerializer
+
     def get_queryset(self):
-        user=self.request.user
-        # queryset=Budget.objects.filter(user=user)
-        budgets=Budget.objects.filter(user=user)
-        # for budget in budgets:
-        #     if (now().date()-budget.createdAt.date()).days>30:
-        #         if budget.budget_amount !=0:
-        #             budget.budget_amount=0
-        #             budget.save(update_fields=["budget_amount"])
+        # only this user’s budgets
+        return Budget.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # NOTE: our serializer.create() pulls `user` from request.user
+        # so we don’t pass user= here—just save with the context.
+        serializer.save()
 
 
-        return budgets
-    
-    def perform_create(self,serializer):
-        user=self.request.user
-        serializer.save(user=user)
+class BudgetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BudgetSerializer
+    lookup_field = 'id'
 
-
-class BudgetRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    serializer_class=BudgetSerializer
-    lookup_field='id'
-    
     def get_queryset(self):
-        user=self.request.user
-        queryset=Budget.objects.filter(user=user)
-        return queryset
+        return Budget.objects.filter(user=self.request.user)

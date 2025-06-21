@@ -49,8 +49,10 @@ def call_llm(prompt: str,
     """
     Calls Google Generative AI (Gemini) and returns the assistant's reply.
     """
-    chat = model.start_chat()
-    response = chat.send_message(prompt, generation_config={
-        "temperature": temperature
-    })
-    return response.text
+    # chat = model.start_chat()
+    # response = chat.send_message(prompt, generation_config={
+    #     "temperature": temperature
+    # })
+    # return response.text
+    return f"This is your prompt : \n\n {prompt}"
+

@@ -1,4 +1,4 @@
-from fintrack_app.models import Budget,Category
+from fintrack_app.models import Budget, UserCategory
 from fintrack_app.services.email_service import EmailService
 
 class BudgetService:

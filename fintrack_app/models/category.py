@@ -1,44 +1,21 @@
-# fintrack_app/models/category.py
+# fintrack_app/models/category.py  # renamed to user-category model
 from django.db import models
 from django.contrib.auth.models import User
+from .master_category import MasterCategory
 
-class Category(models.Model):
-    class TransactionType(models.TextChoices):
-        INCOME  = 'In',  'Income'
-        EXPENSE = 'Ex', 'Expense'
-
-    class NameChoices(models.TextChoices):
-        # — Income —
-        SALARY        = 'Salary',     'Salary'
-        INVESTMENTS   = 'Investments','Investments'
-        FREELANCE     = 'Freelance',  'Freelance'
-        OTHERS        = 'Others',     'Others'
-        # — Expense —
-        FOOD          = 'Food',          'Food'
-        HOUSING       = 'Housing',       'Housing'
-        GROCERIES     = 'Groceries',     'Groceries'
-        ELECTRONICS   = 'Electronics',   'Electronics'
-        TRANSPORTATION= 'Transportation','Transportation'
-        DINING        = 'Dining',        'Dining'
-        HEALTHCARE    = 'Healthcare',    'Healthcare'
-        SHOPPING      = 'Shopping',      'Shopping'
-        ENTERTAINMENT = 'Entertainment', 'Entertainment'
-        UTILITIES     = 'Utilities',     'Utilities'
-        OTHER         = 'Other',         'Other'
-
-    user             = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
-    transaction_type = models.CharField(
-        max_length=7,
-        choices=TransactionType.choices,
-        default=TransactionType.EXPENSE,   # ← here
+class UserCategory(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_categories'
     )
+    master_category = models.ForeignKey(
+        MasterCategory, on_delete=models.PROTECT, related_name='user_categories'
+    )
+    total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
-    category         = models.CharField(max_length=20, choices=NameChoices.choices)
-    total_amount     = models.DecimalField(max_digits=20, decimal_places=2)
     class Meta:
-        unique_together = ('user','transaction_type','category')
-        ordering        = ['transaction_type','category']
-        db_table        = 'category'
+        db_table = 'category'
+        unique_together = ('user','master_category')
+        ordering = ['master_category__transaction_type','master_category__name']
 
     def __str__(self):
-        return f"{self.category} ({self.transaction_type.lower()})"
+        return self.master_category.name

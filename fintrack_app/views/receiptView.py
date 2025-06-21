@@ -18,7 +18,7 @@ from fintrack_app.serializers.receiptSR import ReceiptImageUploadSerializer
 from fintrack_app.serializers.transaction import TransactionSerializer
 from fintrack_app.models.transaction import Transaction
 from fintrack_app.models.account import Account
-from fintrack_app.models.category import Category
+from fintrack_app.models.category import UserCategory
 
 class ReceiptOCRAPIView(GenericAPIView):
     """

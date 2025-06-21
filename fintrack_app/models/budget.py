@@ -1,47 +1,52 @@
 from django.db import models
-# from .user import User
 from django.contrib.auth.models import User
-from .category import Category
 from django.core.exceptions import ValidationError
+
+from .category import UserCategory
 from .account import Account
 
 
 class Budget(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='budgets')
+        User, on_delete=models.CASCADE, related_name='budgets'
+    )
+    category = models.ForeignKey(
+        UserCategory, on_delete=models.CASCADE, related_name='budgets'
+    )
     budget_amount = models.DecimalField(max_digits=20, decimal_places=2)
-    # type=models.CharField(max_length=50)
-    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name='budgets')
-    is_exceed=models.BooleanField(default=False)
+    is_exceed = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now=True)
-    last_reset=models.DateTimeField(null=True,blank=True)
-
-    
-
-    
+    last_reset = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.category.category
+        # show the master-category name, not `.category`
+        return f"{self.category.master_category.name} budget for {self.user.username}"
 
     class Meta:
         db_table = 'budget'
         ordering = ['-createdAt']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'category'],
+                name='unique_budget_per_user_category'
+            )
+        ]
 
     def clean(self):
         super().clean()
-        errors = {}
+        # Option A: compare the FK directly
+        if self.category.user != self.user:
+            raise ValidationError({
+                'category': 'Category does not belong to the user.'
+            })
 
-        if self.user.categories.filter(id=self.category.id).count() == 0:
-            # spelling of errors['transaction'] here transaciton spelling should exactly match the field name in the model i.e transaction
-            errors['category'] = 'Category does not belong to the user.'
-        if errors:
-            raise ValidationError(errors)
+        # --- OR, if you prefer using the reverse relation ---
+        # if not self.user.user_categories.filter(pk=self.category.pk).exists():
+        #     raise ValidationError({
+        #         'category': 'Category does not belong to the user.'
+        #     })
 
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
-
-
-
-

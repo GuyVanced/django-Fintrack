@@ -1,40 +1,38 @@
-# fintrack_app/models/transaction.py
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .account import Account
-from .category import Category as UserCategory  # per-user Category model
+from .master_category import MasterCategory  # master list
+from .category import UserCategory
 
 class Transaction(models.Model):
-    class Transaction_type(models.TextChoices):
-        MYINCOME  = 'In', 'INCOME'
-        MYEXPENSE = 'Ex', 'EXPENSE'
+    class TransactionType(models.TextChoices):
+        INCOME  = 'In', 'INCOME'
+        EXPENSE = 'Ex', 'EXPENSE'
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='transactions'
     )
     transaction_type = models.CharField(
         max_length=2,
-        choices=Transaction_type.choices,
-        default=Transaction_type.MYEXPENSE,
+        choices=TransactionType.choices,
+        default=TransactionType.EXPENSE,
     )
     account = models.ForeignKey(
         Account, on_delete=models.CASCADE, related_name='transactions'
     )
-    category = models.CharField(
-        max_length=20,
-        choices=UserCategory.NameChoices.choices
+    category = models.ForeignKey(
+        MasterCategory, on_delete=models.PROTECT, related_name='transactions'
     )
-    amount            = models.DecimalField(max_digits=20, decimal_places=2)
-    description       = models.CharField(max_length=255, blank=True)
-    date              = models.DateTimeField()
-    receiptPath       = models.CharField(max_length=255, blank=True)
-    isRecurring       = models.BooleanField(default=False)
+    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    description = models.CharField(max_length=255, blank=True)
+    date = models.DateTimeField()
+    receiptPath = models.CharField(max_length=255, blank=True)
+    isRecurring = models.BooleanField(default=False)
     recurringInterval = models.CharField(max_length=50, blank=True)
     nextRecurringDate = models.DateTimeField(null=True, blank=True)
     lastProcessedDate = models.DateTimeField(null=True, blank=True)
-    createdAt         = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'transaction'
@@ -52,6 +50,15 @@ class Transaction(models.Model):
             raise ValidationError(errs)
 
     def save(self, *args, **kwargs):
-        # Always run clean before saving
         self.full_clean()
         super().save(*args, **kwargs)
+
+
+# fintrack_app/serializers/master_category.py
+from rest_framework import serializers
+from fintrack_app.models.master_category import MasterCategory
+
+class MasterCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MasterCategory
+        fields = ['id', 'transaction_type', 'name']
