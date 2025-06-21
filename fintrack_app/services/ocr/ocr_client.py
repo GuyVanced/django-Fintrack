@@ -3,7 +3,9 @@ import os
 import google.generativeai as genai
 
 # 1. Configure the SDK once, at import time, from a dedicated env var
-genai.configure(api_key=os.getenv('GOOGLE_API_KEY_OCR'))
+api_key = os.getenv('GOOGLE_API_KEY_OCR')
+genai.configure(api_key = api_key)
+print(api_key)
 
 # 2. Updated prompt: valid JSON schema (commas, quotes), renamed "accuracy" → "completeness"
 PROMPT = """
@@ -30,7 +32,7 @@ Where:
  - If any field is missing or you are not confident about the value, use `null` (or empty list for `items`).
  - `category` must be one of:
    ["Food","Income","Housing","Groceries","Electronics","Transportation",
-    "Dining","Healthcare","Shopping","Entertainment","Utilities","Other"]
+    "Dining","Healthcare","Shopping","Entertainment","Utilities","Others"]
  - 'description' should only be around 2-3 words (related to merchant/items/category)
 """
 
@@ -52,19 +54,19 @@ def parse_receipt(image_bytes: bytes, mime_type: str) -> dict:
     2) Clean fences, parse JSON
     3) Compute 'completeness' = (# of non-null fields) / 5 * 100
     """
-    model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
+    # model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
     
-    multimodal_input = [
-    PROMPT,
-    {"mime_type": mime_type, "data": image_bytes}
-    ]
+    # multimodal_input = [
+    # PROMPT,
+    # {"mime_type": mime_type, "data": image_bytes}
+    # ]
     
-    # pass prompt and image as separate positional args
-    response = model.generate_content(
-        multimodal_input
-    )
+    # # pass prompt and image as separate positional args
+    # response = model.generate_content(
+    #     multimodal_input
+    # )
 
-    cleaned = clean_markdown_fences(response.text)
+    # cleaned = clean_markdown_fences(response.text)
     data = json.loads(cleaned)
 
     # compute completeness

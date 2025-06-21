@@ -2,6 +2,8 @@ from fintrack_app.serializers.transaction import TransactionSerializer
 from fintrack_app.models import Transaction
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 
+from ..services.budget_service import BudgetService
+
 from django.db import transaction as db_transaction
 
 class TransactionListCreateView(ListCreateAPIView):
@@ -14,9 +16,9 @@ class TransactionListCreateView(ListCreateAPIView):
         return Transaction.objects.none()
 
     def perform_create(self, serializer):
-        # serializer.create() will adjust balances, user-category totals,
-        # and call BudgetService.check_and_notify_budget(...)
-        serializer.save(user=self.request.user)
+        tx = serializer.save()
+    
+        
 
 
 class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -33,8 +35,8 @@ class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         # Persist the updated transaction (this calls your serializer.update())
         tx = serializer.save()
-        # Then re-check against the (possibly changed) category totals
-        BudgetService.check_and_notify_budget(tx.category)
+        
+        
 
     @db_transaction.atomic
     def perform_destroy(self, instance):
@@ -44,7 +46,7 @@ class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
         user_cat = instance.category
 
         # Reverse the original impact on balance
-        if instance.transaction_type == Transaction.Transaction_type.MYINCOME:
+        if instance.transaction_type == Transaction.transaction_type.MYINCOME:
             account.balance -= amount
         else:
             account.balance += amount
@@ -56,6 +58,6 @@ class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
         instance.delete()
 
-        
+
 
 
