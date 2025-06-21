@@ -48,12 +48,13 @@ class ReceiptOCRAPIView(GenericAPIView):
 
         # 4) Return OCR payload + url, but DO NOT create Transaction yet
         return Response({
-            "description":   ocr.get("description"),
+            "merchant" :     ocr.get("merchant"),
             "date":          ocr.get("date"),
             "total":         ocr.get("total"),
             "category":      ocr.get("category"),
             "completeness":  ocr.get("completeness"),
-            "receiptPath":    receipt_path,
+            "receiptPath":   receipt_path,
+            "description":   ocr.get("description")
         }, status=status.HTTP_200_OK)
 
 
@@ -66,15 +67,16 @@ class TransactionCreateAPIView(APIView):
 
     def post(self, request):
         user = request.user
-        raw = request.data
+        raw  = request.data
 
-        # ← ADD THIS BLOCK to catch a missing account_id
+        # 1) Ensure they sent an account_id
         if "account_id" not in raw:
             return Response(
                 {"detail": "Missing required field: account_id"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        # lookup account
+
+        # 2) Lookup that account & confirm it belongs to them
         try:
             account = Account.objects.get(id=raw['account_id'], user=user)
         except Account.DoesNotExist:
@@ -83,47 +85,43 @@ class TransactionCreateAPIView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # lookup or create category
-        # category, _ = Category.objects.get_or_create(
-        #     user=user, category=raw['category']
-        # )
-        category = raw['category']
-        # parse date into a datetime
-        tx_date = datetime.strptime(raw['date'], "%Y-%m-%d")
+        # 3) Parse their date into a datetime
+        try:
+            tx_date = datetime.strptime(raw['date'], "%Y-%m-%d")
+        except (KeyError, ValueError):
+            return Response(
+                {"detail": "Invalid or missing date; expected YYYY-MM-DD."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 4) Build the serializer payload
+        #    We only ever create expenses from receipts:
+        tx_type = Transaction.TransactionType.EXPENSE
 
         payload = {
-            "user":        request.user.id,         
-            "account":     raw["account_id"], 
-            "transaction_type" : "Ex",    
-            "category":    category,              
-            "amount":      raw["total"],             
-            "description": raw.get("description", ""),
-            "date":        raw["date"],              
-            "receiptPath":  raw["receiptPath"],
-            
+            "account":          account.id,
+            "transaction_type": tx_type,
+            "category":         raw.get("category", ""),
+            "amount":           raw.get("total"),
+            "description":      raw.get("description", ""),
+            "date":             tx_date,
+            "receiptPath":      raw.get("receiptPath", ""),
         }
-        ser  = TransactionSerializer(data=payload, context={"request": request})
+
+        # 5) Validate + save via our existing TransactionSerializer
+        ser = TransactionSerializer(data=payload, context={"request": request})
         ser.is_valid(raise_exception=True)
-        data = ser.validated_data
+        tx = ser.save()
 
-        tx= ser.save()
-        # create the transaction
-        # tx = Transaction.objects.create(
-        #     user        = user,
-        #     account     = account,
-        #     category    = category_id,
-        #     amount      = data['total'],
-        #     description = data['description'],
-        #     date        = tx_date,
-        #     receiptUrl  = data['receiptUrl']
-        # )
-
+        # 6) Return simple primitives only
         return Response({
             "id":          tx.id,
-            "description":    tx.description,
-            "date":        tx.date.isoformat(),
+            "account_id":  tx.account.id,
+            "transaction_type": tx.transaction_type,
+            "category":    tx.category.name,
             "amount":      str(tx.amount),
-            "category":    tx.category,
-            "receiptPath":  tx.receiptPath,
+            "description": tx.description,
+            "date":        tx.date.isoformat(),
+            "receiptPath": tx.receiptPath,
         }, status=status.HTTP_201_CREATED)
     

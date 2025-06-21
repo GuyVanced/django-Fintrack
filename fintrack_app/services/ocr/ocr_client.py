@@ -54,23 +54,23 @@ def parse_receipt(image_bytes: bytes, mime_type: str) -> dict:
     2) Clean fences, parse JSON
     3) Compute 'completeness' = (# of non-null fields) / 5 * 100
     """
-    # model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
+    model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
     
-    # multimodal_input = [
-    # PROMPT,
-    # {"mime_type": mime_type, "data": image_bytes}
-    # ]
+    multimodal_input = [
+    PROMPT,
+    {"mime_type": mime_type, "data": image_bytes}
+    ]
     
-    # # pass prompt and image as separate positional args
-    # response = model.generate_content(
-    #     multimodal_input
-    # )
+    # pass prompt and image as separate positional args
+    response = model.generate_content(
+        multimodal_input
+    )
 
-    # cleaned = clean_markdown_fences(response.text)
+    cleaned = clean_markdown_fences(response.text)
     data = json.loads(cleaned)
 
     # compute completeness
-    expected_fields = ["merchant", "date", "items", "total", "category"]
+    expected_fields = ["merchant", "date", "items", "total", "category","description"]
     found = 0
     for key in expected_fields:
         val = data.get(key)
