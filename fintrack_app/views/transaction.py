@@ -1,5 +1,5 @@
 from fintrack_app.serializers.transaction import TransactionSerializer
-from fintrack_app.models import Transaction
+from fintrack_app.models import Transaction, UserCategory
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 
 from ..services.budget_service import BudgetService
@@ -40,21 +40,27 @@ class TransactionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
     @db_transaction.atomic
     def perform_destroy(self, instance):
+        user = self.request.user
         account = instance.account
         amount  = instance.amount
         # instance.category is now a UserCategory FK
         user_cat = instance.category
 
         # Reverse the original impact on balance
-        if instance.transaction_type == Transaction.transaction_type.MYINCOME:
+        if instance.transaction_type == Transaction.TransactionType.INCOME:
             account.balance -= amount
         else:
             account.balance += amount
         account.save()
 
-        # Reverse it on the category total
+        # 2) Fetch and roll back the per-user category total
+
+        user_cat = UserCategory.objects.get(
+            user=user,
+            master_category=instance.category
+        )
         user_cat.total_amount -= amount
-        user_cat.save()
+        user_cat.save(update_fields=['total_amount'])
 
         instance.delete()
 
