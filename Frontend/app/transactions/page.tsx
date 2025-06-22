@@ -34,7 +34,7 @@ export default function TransactionsPage() {
   const { data: transactionsResponse, isLoading: transactionsLoading } = useTransactions();
   const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
   const { data: userCategoriesResponse, isLoading: categoriesLoading } = useUserCategories();
-  const { data: masterCategoriesResponse, isLoading: masterCategoriesLoading } = useMasterCategories(selectedTransactionType as TransactionType);
+  const { data: masterCategoriesResponse, isLoading: masterCategoriesLoading, error: masterCategoriesError } = useMasterCategories(selectedTransactionType as TransactionType);
   const createTransactionMutation = useCreateTransaction();
   const createUserCategoryMutation = useCreateUserCategory();
   const deleteTransactionMutation = useDeleteTransaction();
@@ -51,19 +51,9 @@ export default function TransactionsPage() {
     ? userCategoriesResponse 
     : userCategoriesResponse?.results || [];
 
-  const masterCategories = masterCategoriesResponse?.results || [];
-
-  // Filter user categories by selected transaction type
-  const filteredUserCategories = selectedTransactionType && Array.isArray(userCategories)
-    ? userCategories.filter(cat => cat?.master_category?.transaction_type === selectedTransactionType)
-    : [];
-
-  // Get master categories that are not yet user categories
-  const availableMasterCategories = Array.isArray(masterCategories) 
-    ? masterCategories.filter(masterCat => 
-        !userCategories.some(userCat => userCat?.master_category?.id === masterCat?.id)
-      )
-    : [];
+  const masterCategories = Array.isArray(masterCategoriesResponse)
+    ? masterCategoriesResponse
+    : masterCategoriesResponse?.results || [];
 
   // Reset category when transaction type changes
   useEffect(() => {
@@ -94,14 +84,8 @@ export default function TransactionsPage() {
 
     try {
       const categoryId = parseInt(formData.category);
-      const isMasterCategory = availableMasterCategories.some(mc => mc.id === categoryId);
-      let categoryName: string | undefined;
-
-      if (isMasterCategory) {
-        categoryName = availableMasterCategories.find(mc => mc.id === categoryId)?.name;
-      } else {
-        categoryName = userCategories.find(uc => uc.id === categoryId)?.master_category.name;
-      }
+      const categoryObj = masterCategories.find(mc => mc.id === categoryId);
+      const categoryName = categoryObj?.name;
 
       if (!categoryName) {
         toast({ title: "Error", description: "Selected category not found.", variant: "destructive" });
@@ -276,24 +260,44 @@ export default function TransactionsPage() {
     category: "",
     receiptPath: "",
   });
+
+  // For receipt modal: always fetch master categories for 'Ex' (Expense)
+  const { data: receiptMasterCategoriesResponse, isLoading: receiptMasterCategoriesLoading, error: receiptMasterCategoriesError } = useMasterCategories('Ex');
+  const receiptMasterCategories = Array.isArray(receiptMasterCategoriesResponse)
+    ? receiptMasterCategoriesResponse
+    : receiptMasterCategoriesResponse?.results || [];
+
   useEffect(() => {
     if (receiptResult) {
-      // Find the user category id that matches the OCR category name
-      const matchedCategory = userCategories.find(
-        cat => cat.master_category.transaction_type === 'Ex' && cat.master_category.name === receiptResult.category
+      // Use receiptMasterCategories for matching
+      const matchedMasterCategory = receiptMasterCategories.find(
+        cat => cat.transaction_type === 'Ex' && cat.name === receiptResult.category
       );
-      setReceiptForm({
-        description: receiptResult.description || "",
-        transaction_type: "Ex",
-        account_id: "",
-        date: receiptResult.date || "",
-        total: receiptResult.total?.toString() || "",
-        category: matchedCategory ? matchedCategory.id.toString() : "",
-        receiptPath: receiptResult.receiptPath || "",
+      setReceiptForm(prev => {
+        if (
+          prev.description === (receiptResult.description || "") &&
+          prev.date === (receiptResult.date || "") &&
+          prev.total === (receiptResult.total?.toString() || "") &&
+          prev.category === (matchedMasterCategory ? matchedMasterCategory.id.toString() : "") &&
+          prev.receiptPath === (receiptResult.receiptPath || "")
+        ) {
+          return prev; // No change, avoid infinite loop
+        }
+        return {
+          description: receiptResult.description || "",
+          transaction_type: "Ex",
+          account_id: "",
+          date: receiptResult.date || "",
+          total: receiptResult.total?.toString() || "",
+          category: matchedMasterCategory ? matchedMasterCategory.id.toString() : "",
+          receiptPath: receiptResult.receiptPath || "",
+        };
       });
       setIsReceiptConfirmOpen(true);
     }
-  }, [receiptResult, userCategories]);
+    // Only depend on receiptResult!
+    // eslint-disable-next-line
+  }, [receiptResult]);
 
   const handleReceiptFormChange = (field: string, value: string) => {
     setReceiptForm((prev) => ({ ...prev, [field]: value }));
@@ -310,13 +314,16 @@ export default function TransactionsPage() {
       return;
     }
     try {
+      const categoryId = parseInt(receiptForm.category);
+      const categoryObj = receiptMasterCategories.find(mc => mc.id === categoryId);
+      const categoryName = categoryObj?.name || "";
       const payload = {
         description: receiptForm.description,
         transaction_type: "Ex",
         account_id: parseInt(receiptForm.account_id),
         date: receiptForm.date,
         total: parseFloat(receiptForm.total),
-        category: userCategories.find(cat => cat.id.toString() === receiptForm.category)?.master_category.name || "",
+        category: categoryName,
         receiptPath: receiptForm.receiptPath,
       };
       console.log('Receipt create payload:', payload);
@@ -341,6 +348,16 @@ export default function TransactionsPage() {
       });
     }
   };
+
+  // Debug log for master categories
+  console.log('masterCategoriesResponse:', masterCategoriesResponse);
+  if (masterCategoriesError) {
+    console.error('Error fetching master categories:', masterCategoriesError);
+  }
+
+  // Helper to get full backend URL for media files
+  const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const getImageUrl = (path: string) => path?.startsWith("http") ? path : `${backendUrl}${path}`;
 
   return (
     <ProtectedRoute>
@@ -508,18 +525,19 @@ export default function TransactionsPage() {
                         <Select
                           value={formData.category?.toString() || ""}
                           onValueChange={(value) => {
-                            console.log("Category selected:", value);
                             handleInputChange("category", value);
                           }}
-                          disabled={!selectedTransactionType || masterCategoriesLoading}
+                          disabled={!selectedTransactionType || masterCategoriesLoading || !!masterCategoriesError}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder={
                               masterCategoriesLoading
                                 ? "Loading categories..."
+                                : masterCategoriesError
+                                ? "Error loading categories"
                                 : !selectedTransactionType 
                                 ? "Select transaction type first" 
-                                : (filteredUserCategories.length === 0 && availableMasterCategories.length === 0)
+                                : masterCategories.length === 0
                                   ? "No categories available" 
                                   : "Select category"
                             } />
@@ -529,42 +547,25 @@ export default function TransactionsPage() {
                               <div className="flex items-center justify-center p-4">
                                 <Loader2 className="h-4 w-4 animate-spin" />
                               </div>
+                            ) : masterCategoriesError ? (
+                              <div className="text-red-500 p-4">Error loading categories</div>
                             ) : (
-                              <>
-                                {/* Existing user categories */}
-                                {filteredUserCategories.length > 0 && (
-                                  <>
-                                    <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">
-                                      Your Categories
-                                    </div>
-                                    {filteredUserCategories.map((category) => (
-                                      <SelectItem key={category.id} value={category.id.toString()}>
-                                        {category.master_category.name}
-                                      </SelectItem>
-                                    ))}
-                                  </>
-                                )}
-                                
-                                {/* Available master categories */}
-                                {availableMasterCategories.length > 0 && (
-                                  <>
-                                    <div className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">
-                                      New Categories
-                                    </div>
-                                    {availableMasterCategories.map((category) => (
-                                      <SelectItem key={category.id} value={category.id.toString()}>
-                                        {category.name}
-                                      </SelectItem>
-                                    ))}
-                                  </>
-                                )}
-                              </>
+                              masterCategories.map((category) => (
+                                <SelectItem key={category.id} value={category.id.toString()}>
+                                  {category.name}
+                                </SelectItem>
+                              ))
                             )}
                           </SelectContent>
                         </Select>
-                        {!masterCategoriesLoading && selectedTransactionType && filteredUserCategories.length === 0 && availableMasterCategories.length === 0 && (
+                        {!masterCategoriesLoading && selectedTransactionType && masterCategories.length === 0 && !masterCategoriesError && (
                           <p className="text-sm text-muted-foreground pt-1">
                             No categories found for this type.
+                          </p>
+                        )}
+                        {masterCategoriesError && (
+                          <p className="text-sm text-red-500 pt-1">
+                            Error loading categories: {masterCategoriesError.message}
                           </p>
                         )}
                       </div>
@@ -728,8 +729,8 @@ export default function TransactionsPage() {
               <form onSubmit={handleConfirmReceipt} className="space-y-4">
                 <div className="flex flex-col items-center gap-2">
                   {receiptForm.receiptPath && (
-                    <div className="w-24 h-24 relative cursor-pointer" title="Click to view full image" onClick={() => window.open(receiptForm.receiptPath, '_blank')}> 
-                      <img src={receiptForm.receiptPath} alt="Receipt" className="object-contain w-full h-full rounded border" />
+                    <div className="w-24 h-24 relative cursor-pointer" title="Click to view full image" onClick={() => window.open(getImageUrl(receiptForm.receiptPath), '_blank')}> 
+                      <img src={getImageUrl(receiptForm.receiptPath)} alt="Receipt" className="object-contain w-full h-full rounded border" />
                     </div>
                   )}
                 </div>
@@ -748,18 +749,48 @@ export default function TransactionsPage() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="category">Category *</Label>
-                    <Select value={receiptForm.category} onValueChange={value => handleReceiptFormChange('category', value)}>
+                    <Select
+                      value={receiptForm.category}
+                      onValueChange={value => handleReceiptFormChange('category', value)}
+                      disabled={receiptMasterCategoriesLoading || !!receiptMasterCategoriesError}
+                    >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={
+                          receiptMasterCategoriesLoading
+                            ? "Loading categories..."
+                            : receiptMasterCategoriesError
+                            ? "Error loading categories"
+                            : (receiptMasterCategories.length === 0)
+                              ? "No categories available"
+                              : "Select category"
+                        } />
                       </SelectTrigger>
                       <SelectContent>
-                        {userCategories.filter(cat => cat.master_category.transaction_type === 'Ex').map(category => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.master_category.name}
-                          </SelectItem>
-                        ))}
+                        {receiptMasterCategoriesLoading ? (
+                          <div className="flex items-center justify-center p-4">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          </div>
+                        ) : receiptMasterCategoriesError ? (
+                          <div className="text-red-500 p-4">Error loading categories</div>
+                        ) : (
+                          receiptMasterCategories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
+                    {!receiptMasterCategoriesLoading && receiptMasterCategories.length === 0 && !receiptMasterCategoriesError && (
+                      <p className="text-sm text-muted-foreground pt-1">
+                        No categories found for this type.
+                      </p>
+                    )}
+                    {receiptMasterCategoriesError && (
+                      <p className="text-sm text-red-500 pt-1">
+                        Error loading categories: {receiptMasterCategoriesError.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="account">Account *</Label>
