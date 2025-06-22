@@ -5,9 +5,11 @@ from rest_framework import status
 from datetime import date
 from rest_framework.generics import ListAPIView, RetrieveDestroyAPIView
 
+
 from fintrack_app.services.insights.generator import generate_monthly_insight
 from fintrack_app.serializers.monthlyInsights import MonthlyInsightSerializer
 from fintrack_app.models.monthlyInsights import MonthlyInsight
+from fintrack_app.models.transaction import Transaction    
 
 class MonthlyInsightView(APIView):
     """
@@ -22,6 +24,18 @@ class MonthlyInsightView(APIView):
         if not (year and month):
             today = date.today()
             year, month = today.year, today.month
+
+            # **NEW**: bail out early if no transactions in that month
+        has_tx = Transaction.objects.filter(
+            user=request.user,
+            date__year=year,
+            date__month=month
+        ).exists()
+        if not has_tx:
+            return Response(
+                {"detail": f"No transactions found for {year}-{month:02d}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             summary = generate_monthly_insight(request.user, int(year), int(month))

@@ -15,13 +15,11 @@ import { useAccounts, useCreateAccount } from "@/hooks/useFinancialData";
 import type { AccountType } from "@/lib/api";
 
 const accountTypes: { value: AccountType; label: string }[] = [
-  { value: "BA", label: "Bank Account" },
+  { value: "CK", label: "Checking" },
   { value: "SV", label: "Savings" },
-  { value: "CC", label: "Credit Card" },
+  { value: "CR", label: "Credit Card" },
+  { value: "CA", label: "Cash" },
   { value: "IN", label: "Investment" },
-  { value: "LO", label: "Loan" },
-  { value: "AS", label: "Asset" },
-  { value: "CR", label: "Cryptocurrency" },
 ];
 
 export default function AccountsPage() {

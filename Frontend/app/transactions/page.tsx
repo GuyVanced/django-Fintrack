@@ -237,7 +237,8 @@ export default function TransactionsPage() {
       const data = await response.json();
       // Remove merchant field if present
       const { merchant, ...rest } = data;
-      setReceiptResult(rest);
+      // Store the local preview URL for later use in the confirm modal
+      setReceiptResult({ ...rest, _localPreview: receiptPreview });
       setIsReceiptDialogOpen(false);
     } catch (error: any) {
       toast({
@@ -358,6 +359,13 @@ export default function TransactionsPage() {
   // Helper to get full backend URL for media files
   const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const getImageUrl = (path: string) => path?.startsWith("http") ? path : `${backendUrl}${path}`;
+
+  // In the confirm modal, use the local preview if backend path is not available
+  const imageUrl = receiptForm.receiptPath
+    ? getImageUrl(receiptForm.receiptPath)
+    : receiptResult?._localPreview || null;
+
+  const [isToday, setIsToday] = useState(false);
 
   return (
     <ProtectedRoute>
@@ -571,14 +579,33 @@ export default function TransactionsPage() {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="date">Date *</Label>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => handleInputChange("date", e.target.value)}
-                      />
+                    <div className="grid grid-cols-2 gap-4 items-end">
+                      <div>
+                        <Label htmlFor="date">Date *</Label>
+                        <Input
+                          id="date"
+                          type="date"
+                          value={formData.date}
+                          onChange={(e) => handleInputChange("date", e.target.value)}
+                          disabled={isToday}
+                        />
+                      </div>
+                      <div className="flex justify-center items-center h-full">
+                        <label className="flex items-center gap-2 cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={isToday}
+                            onChange={e => {
+                              setIsToday(e.target.checked);
+                              if (e.target.checked) {
+                                const today = new Date().toISOString().split('T')[0];
+                                handleInputChange("date", today);
+                              }
+                            }}
+                          />
+                          <span>Today</span>
+                        </label>
+                      </div>
                     </div>
 
                     <div className="flex justify-end space-x-2 pt-4">
@@ -701,22 +728,6 @@ export default function TransactionsPage() {
             </Card>
           )}
 
-          {/* Show receipt result as JSON if available */}
-          {receiptResult && (
-            <div className="mt-8">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Receipt OCR Result</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <pre className="bg-muted p-4 rounded text-sm overflow-x-auto">
-                    {JSON.stringify(receiptResult, null, 2)}
-                  </pre>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
           {/* Receipt Confirm Modal */}
           <Dialog open={isReceiptConfirmOpen} onOpenChange={setIsReceiptConfirmOpen}>
             <DialogContent className="sm:max-w-[500px] w-full">
@@ -728,9 +739,9 @@ export default function TransactionsPage() {
               </DialogHeader>
               <form onSubmit={handleConfirmReceipt} className="space-y-4">
                 <div className="flex flex-col items-center gap-2">
-                  {receiptForm.receiptPath && (
-                    <div className="w-24 h-24 relative cursor-pointer" title="Click to view full image" onClick={() => window.open(getImageUrl(receiptForm.receiptPath), '_blank')}> 
-                      <img src={getImageUrl(receiptForm.receiptPath)} alt="Receipt" className="object-contain w-full h-full rounded border" />
+                  {imageUrl && (
+                    <div className="w-24 h-24 relative cursor-pointer" title="Click to view full image" onClick={() => window.open(imageUrl, '_blank')}> 
+                      <img src={imageUrl} alt="Receipt" className="object-contain w-full h-full rounded border" />
                     </div>
                   )}
                 </div>
