@@ -18,6 +18,12 @@ class BudgetSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    category_name = serializers.CharField(
+        source='category.master_category.name',
+        read_only=True
+    )
+    
+
     class Meta:
         model = Budget
         fields = [
@@ -26,8 +32,10 @@ class BudgetSerializer(serializers.ModelSerializer):
             'is_exceed',
             'master_category',  # write-only
             'category',         # read-only UserCategory FK
+            'category_name'
+        
         ]
-        read_only_fields = ['id', 'is_exceed', 'category']
+        read_only_fields = ['id', 'is_exceed', 'category', 'category_name']
 
     def validate_budget_amount(self, value):
         """
@@ -37,7 +45,7 @@ class BudgetSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Budget amount must be greater than zero.")
         return value
     
-    
+
     def validate_master_category(self, value):
         """
         Prevent a second Budget for the same user+category.
@@ -76,4 +84,16 @@ class BudgetSerializer(serializers.ModelSerializer):
 
         return budget
     
+    def update(self, instance, validated_data):
+        """
+        Only allow updating the budget_amount on an existing Budget.
+        Skip the master_category uniqueness check when it's unchanged.
+        """
+        # Update only the budget_amount field
+        new_amount = validated_data.get('budget_amount')
+        if new_amount is not None:
+            instance.budget_amount = new_amount
+            instance.save(update_fields=['budget_amount'])
+
+        return instance
     
