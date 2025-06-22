@@ -18,22 +18,22 @@ def fetch_aggregates(user, start: date, end: date) -> dict:
         date__gte=start,
         date__lt=end
     )
-    incomes = qs.filter(transaction_type=Transaction.Transaction_type.MYINCOME)
-    expenses = qs.filter(transaction_type=Transaction.Transaction_type.MYEXPENSE)
+    incomes = qs.filter(transaction_type=Transaction.TransactionType.INCOME)
+    expenses = qs.filter(transaction_type=Transaction.TransactionType.EXPENSE)
 
     total_income  = incomes.aggregate(t=Sum('amount'))['t'] or 0
     total_expense = expenses.aggregate(t=Sum('amount'))['t'] or 0
 
     income_breakdown = {
-        row['category__category']: float(row['amt'])
+        row['category__name']: float(row['amt'])
         for row in incomes
-            .values('category__category')
+            .values('category__name')
             .annotate(amt=Sum('amount'))
     }
     expense_breakdown = {
-        row['category__category']: float(row['amt'])
+        row['category__name']: float(row['amt'])
         for row in expenses
-            .values('category__category')
+            .values('category__name')
             .annotate(amt=Sum('amount'))
     }
 

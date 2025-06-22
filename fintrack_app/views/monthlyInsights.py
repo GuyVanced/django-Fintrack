@@ -1,8 +1,9 @@
-from rest_framework.views import APIView
+from rest_framework.views import APIView 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import date
+from rest_framework.generics import ListAPIView, RetrieveDestroyAPIView
 
 from fintrack_app.services.insights.generator import generate_monthly_insight
 from fintrack_app.serializers.monthlyInsights import MonthlyInsightSerializer
@@ -43,4 +44,38 @@ class MonthlyInsightView(APIView):
 
 
         serializer = MonthlyInsightSerializer(insight)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                "report": summary,               # the LLM text/dict
+                "insight_record": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    
+
+class MonthlyInsightListView(ListAPIView):
+    """
+    GET  /api/monthly-insights/         -> list all insights for the authenticated user
+    """
+    serializer_class = MonthlyInsightSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return MonthlyInsight.objects.filter(user=user)
+
+
+class MonthlyInsightRetrieveDestroyView(RetrieveDestroyAPIView):
+    """
+    GET    /api/monthly-insights/{id}/  -> retrieve a single insight
+    DELETE /api/monthly-insights/{id}/  -> delete that insight
+    """
+    serializer_class = MonthlyInsightSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        user = self.request.user
+        return MonthlyInsight.objects.filter(user=user)
