@@ -100,19 +100,30 @@ class TransactionSerializer(serializers.ModelSerializer):
         new_amt  = validated_data.get('amount', old_amt)
         new_acc  = validated_data.get('account', old_acc)
 
-        # reverse old account balance
-        if old_type == Transaction.TransactionType.INCOME:
-            old_acc.balance -= old_amt
-        else:
-            old_acc.balance += old_amt
-        old_acc.save()
+        def effect(tx_type, amt):
+            return amt if tx_type == Transaction.TransactionType.INCOME else -amt
+        
+        old_effect = effect(old_type, old_amt)
+        new_effect = effect(new_type, new_amt)
+        
+        net_delta = -old_effect + new_effect
 
-        # apply new account balance
-        if new_type == Transaction.TransactionType.INCOME:
-            new_acc.balance += new_amt
-        else:
-            new_acc.balance -= new_amt
-        new_acc.save()
+        new_acc.balance += net_delta
+        new_acc.save(update_fields=['balance'])
+
+        # # reverse old account balance
+        # if old_type == Transaction.TransactionType.INCOME:
+        #     old_acc.balance -= old_amt
+        # else:
+        #     old_acc.balance += old_amt
+        # old_acc.save()
+
+        # # apply new account balance
+        # if new_type == Transaction.TransactionType.INCOME:
+        #     new_acc.balance += new_amt
+        # else:
+        #     new_acc.balance -= new_amt
+        # new_acc.save()
 
         # adjust user-category totals
         if new_type != old_type or new_cat != old_cat:
