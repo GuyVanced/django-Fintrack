@@ -45,6 +45,14 @@ class TransactionSerializer(serializers.ModelSerializer):
             qs = MasterCategory.objects.all()
         self.fields['category'].queryset = qs
 
+    def validate_amount(self, value):
+        """
+        Ensure that the transaction amount is not negative.
+        """
+        if value < 0:
+            raise serializers.ValidationError("Amount cannot be negative.")
+        return value
+
     def validate(self, data):
         if data['category'].transaction_type != data['transaction_type']:
             raise serializers.ValidationError({'category': 'Mismatched transaction type for category.'})

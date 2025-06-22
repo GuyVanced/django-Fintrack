@@ -29,6 +29,14 @@ class BudgetSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'is_exceed', 'category']
 
+    def validate_budget_amount(self, value):
+        """
+        Ensure that the budget amount is not negative or zero.
+        """
+        if value <= 0:
+            raise serializers.ValidationError("Budget amount must be greater than zero.")
+        return value
+    
     
     def validate_master_category(self, value):
         """
