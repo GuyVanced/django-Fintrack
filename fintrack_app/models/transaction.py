@@ -5,6 +5,10 @@ from .account import Account
 from .master_category import MasterCategory  # master list
 from .category import UserCategory
 
+
+from rest_framework import serializers
+from fintrack_app.models.master_category import MasterCategory
+
 class Transaction(models.Model):
     class TransactionType(models.TextChoices):
         INCOME  = 'In', 'INCOME'
@@ -54,9 +58,6 @@ class Transaction(models.Model):
         super().save(*args, **kwargs)
 
 
-# fintrack_app/serializers/master_category.py
-from rest_framework import serializers
-from fintrack_app.models.master_category import MasterCategory
 
 class MasterCategorySerializer(serializers.ModelSerializer):
     class Meta:
