@@ -1,12 +1,9 @@
-import { useUser } from "@clerk/nextjs";
-
 // Debug utilities for API integration testing
 export interface DebugInfo {
   timestamp: string;
   user_id?: string;
   user_email?: string;
   api_base_url?: string;
-  clerk_token?: string;
   request_details: {
     url: string;
     method: string;
@@ -193,17 +190,6 @@ export async function debuggedFetch(
   }
 }
 
-// Hook to get user info for debugging
-export function useDebugInfo() {
-  const { user } = useUser();
-
-  return {
-    user_id: user?.id,
-    user_email: user?.emailAddresses?.[0]?.emailAddress,
-    clerk_session: !!user,
-  };
-}
-
 // Network connectivity test
 export async function testNetworkConnectivity(): Promise<{
   online: boolean;
@@ -239,67 +225,6 @@ export async function testNetworkConnectivity(): Promise<{
       online: navigator.onLine,
       backend_reachable: false,
       cors_enabled: false,
-    };
-  }
-}
-
-// Clerk token debugging
-export async function debugClerkToken(user: any): Promise<{
-  has_token: boolean;
-  token_valid: boolean;
-  token_preview?: string;
-  token_claims?: any;
-  error?: string;
-}> {
-  try {
-    if (!user) {
-      return { has_token: false, token_valid: false };
-    }
-
-    const token = await user.getToken();
-
-    if (!token) {
-      return { has_token: false, token_valid: false };
-    }
-
-    // Basic JWT structure check
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      return {
-        has_token: true,
-        token_valid: false,
-        error: "Invalid JWT structure",
-      };
-    }
-
-    // Decode JWT payload (without verification)
-    try {
-      const payload = JSON.parse(atob(parts[1]));
-
-      return {
-        has_token: true,
-        token_valid: true,
-        token_preview: `${parts[0].substring(0, 10)}...`,
-        token_claims: {
-          sub: payload.sub,
-          iss: payload.iss,
-          exp: payload.exp,
-          iat: payload.iat,
-          // Add other relevant claims
-        },
-      };
-    } catch (decodeError) {
-      return {
-        has_token: true,
-        token_valid: false,
-        error: "Could not decode JWT payload",
-      };
-    }
-  } catch (error) {
-    return {
-      has_token: false,
-      token_valid: false,
-      error: error instanceof Error ? error.message : String(error),
     };
   }
 }

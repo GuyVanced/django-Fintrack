@@ -32,8 +32,6 @@ services:
   nextjs:
     build:
       context: ./NextJS-Frontend
-      args:
-        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     container_name: nextjs
     ports:
       - "3000:3000"
