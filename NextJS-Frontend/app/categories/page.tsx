@@ -1,9 +1,6 @@
 "use client";
 
-// Force dynamic rendering to prevent build-time pre-rendering issues
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/DashboardLayout";
@@ -12,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Loader2, Tag, Trash2, Edit } from "lucide-react";
+import { Tag, Plus, Loader2, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useUserCategories, useCreateUserCategory, useDeleteUserCategory, useMasterCategories } from "@/hooks/useFinancialData";
 import type { TransactionType } from "@/lib/api";
@@ -179,88 +176,6 @@ export default function CategoriesPage() {
                 Organize your transactions with custom categories.
               </p>
             </div>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Category
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add New Category</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="transaction_type">Transaction Type (Optional)</Label>
-                    <Select
-                      value={selectedTransactionType}
-                      onValueChange={(value) => setSelectedTransactionType(value as TransactionType)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All categories (or filter by type)" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="IN">Income</SelectItem>
-                        <SelectItem value="EX">Expense</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="master_category_id">Category *</Label>
-                    <Select
-                      value={formData.master_category_id}
-                      onValueChange={(value) => handleInputChange("master_category_id", value)}
-                      disabled={availableMasterCategories.length === 0}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={
-                          availableMasterCategories.length === 0 
-                            ? "No available categories" 
-                            : "Select category"
-                        } />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableMasterCategories.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.name} ({getTransactionTypeLabel(category.transaction_type)})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {availableMasterCategories.length === 0 && (
-                      <p className="text-sm text-muted-foreground">
-                        All categories are already added.
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex justify-end space-x-2 pt-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        setIsDialogOpen(false);
-                        setSelectedTransactionType("");
-                        setFormData({ master_category_id: "" });
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      disabled={createUserCategoryMutation.isPending || !formData.master_category_id}
-                    >
-                      {createUserCategoryMutation.isPending && (
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      )}
-                      Add Category
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
           </div>
 
           {/* Categories List */}
@@ -331,10 +246,6 @@ export default function CategoriesPage() {
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   Add categories to better organize and track your income and expenses.
                 </p>
-                <Button onClick={() => setIsDialogOpen(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Category
-                </Button>
               </CardContent>
             </Card>
           )}

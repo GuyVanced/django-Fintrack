@@ -3,10 +3,9 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-// Force dynamic rendering for the entire app to prevent build-time pre-rendering issues
-export const dynamic = 'force-dynamic';
-
 const inter = Inter({ subsets: ["latin"] });
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "FinTrack - Personal Finance Management",
@@ -28,11 +27,6 @@ export const metadata: Metadata = {
     description:
       "Track your expenses, manage budgets, and get AI-powered financial insights",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
@@ -44,6 +38,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

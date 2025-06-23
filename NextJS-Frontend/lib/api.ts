@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 // Enhanced types based on the new API documentation
 export interface User {
@@ -24,7 +24,7 @@ export interface RegisterData {
 }
 
 // Account types from the API
-export type AccountType = "BA" | "SV" | "CC" | "IN" | "LO" | "AS" | "CR";
+export type AccountType = "CK" | "SV" | "CR" | "CA" | "IN";
 
 export interface Account {
   id: number;

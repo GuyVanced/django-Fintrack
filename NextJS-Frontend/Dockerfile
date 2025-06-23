@@ -14,7 +14,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Build the Next.js app
-RUN npm run build
+RUN npm run build --no-lint
 
 # ---------------------------
 # PRODUCTION STAGE

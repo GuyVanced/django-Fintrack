@@ -4,6 +4,7 @@ export interface DebugInfo {
   user_id?: string;
   user_email?: string;
   api_base_url?: string;
+  clerk_token?: string;
   request_details: {
     url: string;
     method: string;

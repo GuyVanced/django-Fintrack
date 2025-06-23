@@ -32,9 +32,7 @@ import {
   useFinancialSummary,
 } from "@/hooks/useFinancialData";
 import type { TransactionType } from "@/lib/api";
-
-// Force dynamic rendering to prevent build-time pre-rendering issues
-export const dynamic = 'force-dynamic';
+import Link from "next/link";
 
 export default function DashboardPage() {
   const [showBalances, setShowBalances] = useState(true);
@@ -100,26 +98,30 @@ export default function DashboardPage() {
     end_date: currentMonthEnd,
   });
 
-  // Handle response data (could be paginated or direct array) - wrapped in useMemo to fix dependency warnings
-  const transactions = useMemo(() => {
-    return Array.isArray(transactionsResponse)
+  // Handle response data (could be paginated or direct array)
+  const transactions = useMemo(() =>
+    Array.isArray(transactionsResponse)
       ? transactionsResponse
-      : transactionsResponse?.results || [];
-  }, [transactionsResponse]);
+      : transactionsResponse?.results || []
+  , [transactionsResponse]);
 
-  const accounts = useMemo(() => {
-    return Array.isArray(accountsResponse)
+  const accounts = useMemo(() =>
+    Array.isArray(accountsResponse)
       ? accountsResponse
-      : accountsResponse?.results || [];
-  }, [accountsResponse]);
+      : accountsResponse?.results || []
+  , [accountsResponse]);
 
-  const budgets = Array.isArray(budgetsResponse)
-    ? budgetsResponse
-    : budgetsResponse?.results || [];
+  const budgets = useMemo(() =>
+    Array.isArray(budgetsResponse)
+      ? budgetsResponse
+      : budgetsResponse?.results || []
+  , [budgetsResponse]);
 
-  const userCategories = Array.isArray(userCategoriesResponse)
-    ? userCategoriesResponse
-    : userCategoriesResponse?.results || [];
+  const userCategories = useMemo(() =>
+    Array.isArray(userCategoriesResponse)
+      ? userCategoriesResponse
+      : userCategoriesResponse?.results || []
+  , [userCategoriesResponse]);
 
   // Error states
   const hasErrors =
@@ -196,9 +198,9 @@ export default function DashboardPage() {
     }
 
     // Fallback to master categories
-    const masterCategory = masterCategories?.find(
-      (cat) => cat.id === categoryId,
-    );
+    const masterCategory = Array.isArray(masterCategories)
+      ? masterCategories.find((cat) => cat.id === categoryId)
+      : masterCategories?.results?.find((cat) => cat.id === categoryId);
     return masterCategory?.name || "Unknown";
   };
 
@@ -268,10 +270,12 @@ export default function DashboardPage() {
                 />
                 Refresh
               </Button>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Transaction
-              </Button>
+              <Link href="/transactions">
+                <Button size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Transaction
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -380,18 +384,26 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-3">
-              <Button size="sm" className="h-9">
-                Add Transaction
-              </Button>
-              <Button variant="outline" size="sm" className="h-9">
-                Create Budget
-              </Button>
-              <Button variant="outline" size="sm" className="h-9">
-                Add Account
-              </Button>
-              <Button variant="outline" size="sm" className="h-9">
-                View Insights
-              </Button>
+              <Link href="/transactions">
+                <Button size="sm" className="h-9">
+                  Add Transaction
+                </Button>
+              </Link>
+              <Link href="/budgets">
+                <Button variant="outline" size="sm" className="h-9">
+                  Create Budget
+                </Button>
+              </Link>
+              <Link href="/accounts">
+                <Button variant="outline" size="sm" className="h-9">
+                  Add Account
+                </Button>
+              </Link>
+              <Link href="/insights">
+                <Button variant="outline" size="sm" className="h-9">
+                  View Insights
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -435,12 +447,12 @@ export default function DashboardPage() {
                           <div
                             className={cn(
                               "w-10 h-10 rounded-full flex items-center justify-center",
-                              transaction.transaction_type === "IN"
+                              transaction.transaction_type === "In"
                                 ? "bg-success/10 text-success"
                                 : "bg-destructive/10 text-destructive",
                             )}
                           >
-                            {transaction.transaction_type === "IN" ? (
+                            {transaction.transaction_type === "In" ? (
                               <ArrowUpRight className="h-4 w-4" />
                             ) : (
                               <ArrowDownRight className="h-4 w-4" />
@@ -463,12 +475,12 @@ export default function DashboardPage() {
                           <p
                             className={cn(
                               "font-medium text-sm",
-                              transaction.transaction_type === "IN"
+                              transaction.transaction_type === "In"
                                 ? "text-success"
                                 : "text-destructive",
                             )}
                           >
-                            {transaction.transaction_type === "IN" ? "+" : "-"}
+                            {transaction.transaction_type === "In" ? "+" : "-"}
                             {showBalances
                               ? formatCurrency(parseFloat(transaction.amount))
                               : "••••"}
@@ -552,7 +564,9 @@ export default function DashboardPage() {
                               : "••••••"}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {format(new Date(account.updated_at), "MMM dd")}
+                            {account.updated_at && !isNaN(new Date(account.updated_at).getTime())
+                              ? format(new Date(account.updated_at), "MMM dd")
+                              : "N/A"}
                           </p>
                         </div>
                       </div>

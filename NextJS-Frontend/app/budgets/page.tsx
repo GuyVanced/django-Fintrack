@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,17 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { Target, Plus, Loader2, Trash2, AlertTriangle, Edit } from "lucide-react";
+import { Target, Plus, Loader2, Trash2, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useBudgets, useCreateBudget, useDeleteBudget, useUserCategories, useMasterCategories, useCreateUserCategory } from "@/hooks/useFinancialData";
-import type { TransactionType, CreateBudgetData } from "@/lib/api";
-
-// Force dynamic rendering to prevent build-time pre-rendering issues
-export const dynamic = 'force-dynamic';
+import type { TransactionType } from "@/lib/api";
 
 export default function BudgetsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -42,7 +41,9 @@ export default function BudgetsPage() {
     ? userCategoriesResponse 
     : userCategoriesResponse?.results || [];
 
-  const masterCategories = masterCategoriesResponse?.results || [];
+  const masterCategories = Array.isArray(masterCategoriesResponse)
+    ? masterCategoriesResponse
+    : masterCategoriesResponse?.results || [];
 
   // Map master categories to user categories (if any)
   const categoryOptions = masterCategories.map((masterCat) => {
@@ -190,28 +191,38 @@ export default function BudgetsPage() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="category">Category *</Label>
-                    <Select
-                      value={formData.category}
-                      onValueChange={(value) => handleInputChange("category", value)}
-                      disabled={availableCategoryOptions.length === 0}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={availableCategoryOptions.length === 0 ? "No available categories" : "Select category"} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableCategoryOptions.map((opt) => (
-                          <SelectItem key={opt.master.id} value={opt.master.id.toString()}>
-                            {opt.master.name}{opt.isNew ? " (New)" : ""}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {userCategories.length === 0 && (
+                    {masterCategoriesLoading ? (
+                      <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                        <Loader2 className="h-4 w-4 animate-spin" /> Loading categories...
+                      </div>
+                    ) : masterCategoriesResponse === undefined ? (
+                      <div className="text-destructive text-sm">
+                        Failed to load categories. Please try again.
+                      </div>
+                    ) : (
+                      <Select
+                        value={formData.category}
+                        onValueChange={(value) => handleInputChange("category", value)}
+                        disabled={availableCategoryOptions.length === 0}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={availableCategoryOptions.length === 0 ? "No available categories" : "Select category"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableCategoryOptions.map((opt) => (
+                            <SelectItem key={opt.master.id} value={opt.master.id.toString()}>
+                              {opt.master.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                    {userCategories.length === 0 && !masterCategoriesLoading && masterCategoriesResponse !== undefined && (
                       <p className="text-sm text-muted-foreground">
                         You have not added any categories yet. Please add an expense category first.
                       </p>
                     )}
-                    {availableCategoryOptions.length === 0 && userCategories.length > 0 && (
+                    {availableCategoryOptions.length === 0 && userCategories.length > 0 && !masterCategoriesLoading && masterCategoriesResponse !== undefined && (
                       <p className="text-sm text-muted-foreground">
                         All categories already have budgets or no categories available.
                       </p>

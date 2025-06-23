@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,25 +9,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Loader2, Wallet, Trash2, Edit } from "lucide-react";
+import { Wallet, Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useAccounts, useCreateAccount, useDeleteAccount } from "@/hooks/useFinancialData";
-import type { AccountType, CreateAccountData } from "@/lib/api";
-
-// Force dynamic rendering to prevent build-time pre-rendering issues
-export const dynamic = 'force-dynamic';
+import { useAccounts, useCreateAccount } from "@/hooks/useFinancialData";
+import type { AccountType } from "@/lib/api";
 
 const accountTypes: { value: AccountType; label: string }[] = [
-  { value: "BA", label: "Bank Account" },
+  { value: "CK", label: "Checking" },
   { value: "SV", label: "Savings" },
-  { value: "CC", label: "Credit Card" },
+  { value: "CR", label: "Credit Card" },
+  { value: "CA", label: "Cash" },
   { value: "IN", label: "Investment" },
-  { value: "LO", label: "Loan" },
-  { value: "AS", label: "Asset" },
-  { value: "CR", label: "Cryptocurrency" },
 ];
 
 export default function AccountsPage() {
@@ -41,7 +37,6 @@ export default function AccountsPage() {
 
   const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
   const createAccountMutation = useCreateAccount();
-  const deleteAccountMutation = useDeleteAccount();
 
   const accounts = Array.isArray(accountsResponse) 
     ? accountsResponse 

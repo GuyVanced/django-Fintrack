@@ -7,18 +7,18 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { apiClient } from "@/lib/api";
+import { apiClient, AuthResponse } from "@/lib/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<AuthResponse>;
   register: (
     username: string,
     email: string,
     password1: string,
     password2: string,
-  ) => Promise<void>;
+  ) => Promise<AuthResponse>;
   logout: () => Promise<void>;
 }
 
