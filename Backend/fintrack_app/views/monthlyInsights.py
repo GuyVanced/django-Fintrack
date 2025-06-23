@@ -33,7 +33,8 @@ class MonthlyInsightView(APIView):
         ).exists()
         if not has_tx:
             return Response(
-                {"detail": f"No transactions found for {year}-{month:02d}."},
+                # Convert month to integer before formatting
+                {"detail": f"No transactions found for {year}-{int(month):02d}."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
