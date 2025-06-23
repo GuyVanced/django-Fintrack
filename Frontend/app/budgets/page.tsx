@@ -12,17 +12,28 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Target, Plus, Loader2, Trash2, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useBudgets, useCreateBudget, useDeleteBudget, useUserCategories, useMasterCategories, useCreateUserCategory } from "@/hooks/useFinancialData";
 import type { TransactionType } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 export default function BudgetsPage() {
+  const searchParams = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     category: "",
     budget_amount: "",
   });
   const { toast } = useToast();
+
+  // Check for modal parameter in URL and open dialog if present
+  useEffect(() => {
+    const modalParam = searchParams.get('modal');
+    if (modalParam === 'create') {
+      setIsDialogOpen(true);
+    }
+  }, [searchParams]);
 
   const { data: budgetsResponse, isLoading: budgetsLoading } = useBudgets();
   const { data: userCategoriesResponse, isLoading: categoriesLoading } = useUserCategories();
@@ -145,7 +156,7 @@ export default function BudgetsPage() {
   const formatCurrency = (amount: string) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "NPR",
     }).format(parseFloat(amount));
   };
 
@@ -161,6 +172,64 @@ export default function BudgetsPage() {
   const getCategoryType = (categoryId: number) => {
     const userCategory = userCategories?.find((cat) => cat.id === categoryId);
     return userCategory?.master_category?.transaction_type || "Ex";
+  };
+
+  // Calculate budget usage percentage
+  const getBudgetUsagePercentage = (budget: any) => {
+    const userCategory = userCategories?.find((cat) => cat.id === budget.category);
+    if (!userCategory || !budget.budget_amount) {
+      return 0;
+    }
+    
+    const totalAmount = parseFloat(userCategory.total_amount);
+    const budgetAmount = parseFloat(budget.budget_amount);
+    
+    if (budgetAmount === 0) {
+      return 0;
+    }
+    
+    const percentage = (totalAmount / budgetAmount) * 100;
+    return percentage; // Remove the cap to show actual percentage
+  };
+
+  // Get the total amount spent for a budget
+  const getBudgetTotalSpent = (budget: any) => {
+    const userCategory = userCategories?.find((cat) => cat.id === budget.category);
+    return userCategory ? parseFloat(userCategory.total_amount) : 0;
+  };
+
+  // Get progress bar color based on usage percentage
+  const getProgressBarColor = (percentage: number) => {
+    if (percentage >= 100) {
+      return "bg-destructive"; // Red for exceeded
+    } else if (percentage >= 80) {
+      return "bg-orange-500"; // Orange for high usage
+    } else if (percentage >= 60) {
+      return "bg-yellow-500"; // Yellow for medium usage
+    } else {
+      return "bg-green-500"; // Green for low usage
+    }
+  };
+
+  // Custom Progress component with dynamic color
+  const BudgetProgress = ({ value, className }: { value: number; className?: string }) => {
+    const colorClass = getProgressBarColor(value);
+    const displayWidth = Math.min(value, 100); // Cap visual bar at 100% but allow percentage to show actual value
+    const isExceeded = value > 100;
+    
+    return (
+      <div className={cn("relative h-2 w-full overflow-hidden rounded-full bg-secondary", className)}>
+        <div
+          className={cn("h-full transition-all", colorClass)}
+          style={{ width: `${displayWidth}%` }}
+        />
+        {isExceeded && (
+          <div className="absolute inset-0 flex items-center justify-end pr-1">
+            <div className="w-1 h-1 bg-white rounded-full opacity-80" />
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -326,13 +395,34 @@ export default function BudgetsPage() {
                         </div>
                       </div>
 
-                      {/* Progress bar for budget usage (placeholder) */}
+                      {/* Progress bar for budget usage */}
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Usage</span>
-                          <span className="text-muted-foreground">75%</span>
+                          <div className="flex items-center gap-1">
+                            {getBudgetUsagePercentage(budget) > 100 && (
+                              <AlertTriangle className="h-3 w-3 text-destructive" />
+                            )}
+                            <span className={cn(
+                              "font-medium",
+                              getBudgetUsagePercentage(budget) > 100 
+                                ? "text-destructive" 
+                                : "text-muted-foreground"
+                            )}>
+                              {getBudgetUsagePercentage(budget).toFixed(1)}%
+                            </span>
+                          </div>
                         </div>
-                        <Progress value={75} className="h-2" />
+                        <BudgetProgress value={getBudgetUsagePercentage(budget)} />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Spent: {formatCurrency(getBudgetTotalSpent(budget).toString())}</span>
+                          <span>
+                            {budget.is_exceed 
+                              ? `Exceeded by: ${formatCurrency((getBudgetTotalSpent(budget) - parseFloat(budget.budget_amount)).toString())}`
+                              : `Remaining: ${formatCurrency((parseFloat(budget.budget_amount) - getBudgetTotalSpent(budget)).toString())}`
+                            }
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </CardContent>

@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Wallet, Plus, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAccounts, useCreateAccount } from "@/hooks/useFinancialData";
 import type { AccountType } from "@/lib/api";
 
@@ -23,6 +24,7 @@ const accountTypes: { value: AccountType; label: string }[] = [
 ];
 
 export default function AccountsPage() {
+  const searchParams = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     account_type: "" as AccountType,
@@ -32,6 +34,14 @@ export default function AccountsPage() {
     balance: "",
   });
   const { toast } = useToast();
+
+  // Check for modal parameter in URL and open dialog if present
+  useEffect(() => {
+    const modalParam = searchParams.get('modal');
+    if (modalParam === 'add') {
+      setIsDialogOpen(true);
+    }
+  }, [searchParams]);
 
   const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
   const createAccountMutation = useCreateAccount();
@@ -94,7 +104,7 @@ export default function AccountsPage() {
   const formatCurrency = (amount: string) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "NPR",
     }).format(parseFloat(amount));
   };
 

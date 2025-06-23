@@ -23,6 +23,7 @@ import {
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 import {
   useAccounts,
   useTransactions,
@@ -36,6 +37,7 @@ import type { TransactionType } from "@/lib/api";
 export default function DashboardPage() {
   const [showBalances, setShowBalances] = useState(true);
   const [dateFilter, setDateFilter] = useState<string>("");
+  const router = useRouter();
 
   // Get current month for filtering
   const currentDate = new Date();
@@ -102,6 +104,24 @@ export default function DashboardPage() {
     ? transactionsResponse
     : transactionsResponse?.results || [];
 
+  const sortedTransactions = useMemo(() => {
+    return [...transactions].sort((a, b) => {
+      // Primary sort: by transaction date (descending)
+      const dateA = new Date(a.date);
+      dateA.setHours(0, 0, 0, 0); // Ignore time part for day comparison
+      const dateB = new Date(b.date);
+      dateB.setHours(0, 0, 0, 0); // Ignore time part for day comparison
+
+      const dateComparison = dateB.getTime() - dateA.getTime();
+      if (dateComparison !== 0) {
+        return dateComparison;
+      }
+
+      // Secondary sort: by creation time for transactions on the same day
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [transactions]);
+
   const accounts = Array.isArray(accountsResponse)
     ? accountsResponse
     : accountsResponse?.results || [];
@@ -133,23 +153,23 @@ export default function DashboardPage() {
   }, [accounts]);
 
   const recentTransactions = useMemo(
-    () => transactions?.slice(0, 5) || [],
-    [transactions],
+    () => sortedTransactions?.slice(0, 5) || [],
+    [sortedTransactions],
   );
 
   const { monthlyIncome, monthlyExpenses } = useMemo(() => {
     const income =
-      transactions
-        ?.filter((t) => t.transaction_type === "IN")
+      sortedTransactions
+        ?.filter((t) => t.transaction_type === "In")
         ?.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0) || 0;
 
     const expenses =
-      transactions
-        ?.filter((t) => t.transaction_type === "EX")
+      sortedTransactions
+        ?.filter((t) => t.transaction_type === "Ex")
         ?.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0) || 0;
 
     return { monthlyIncome: income, monthlyExpenses: expenses };
-  }, [transactions]);
+  }, [sortedTransactions]);
 
   const activeBudgets = budgets?.length || 0;
   const exceededBudgets =
@@ -158,7 +178,7 @@ export default function DashboardPage() {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "NPR",
     }).format(amount);
   };
 
@@ -182,17 +202,36 @@ export default function DashboardPage() {
     return types[type] || type;
   };
 
-  const getCategoryName = (categoryId: number) => {
-    const userCategory = userCategories?.find((cat) => cat.id === categoryId);
+  const getCategoryName = (categoryId: number | string) => {
+    // Try to match by id (number or string)
+    let userCategory = userCategories?.find((cat) => cat.id === Number(categoryId));
+    // If not found, try to match by name (for transactions created from receipts or when category is returned as name)
+    if (!userCategory && typeof categoryId === 'string') {
+      userCategory = userCategories?.find((cat) => cat.master_category.name === categoryId);
+    }
+    
     if (userCategory?.master_category?.name) {
       return userCategory.master_category.name;
     }
 
     // Fallback to master categories
-    const masterCategory = masterCategories?.find(
-      (cat) => cat.id === categoryId,
+    const masterCategoriesArray = Array.isArray(masterCategories)
+      ? masterCategories
+      : masterCategories?.results || [];
+    
+    // Try to find by ID first
+    let masterCategory = masterCategoriesArray?.find(
+      (cat) => cat.id === Number(categoryId),
     );
-    return masterCategory?.name || "Unknown";
+    
+    // If not found and categoryId is a string, try to find by name
+    if (!masterCategory && typeof categoryId === 'string') {
+      masterCategory = masterCategoriesArray?.find(
+        (cat) => cat.name === categoryId,
+      );
+    }
+    
+    return masterCategory?.name || (typeof categoryId === 'string' ? categoryId : 'Unknown');
   };
 
   const handleRefreshData = async () => {
@@ -205,6 +244,23 @@ export default function DashboardPage() {
     } catch (error) {
       console.error("Failed to refresh data:", error);
     }
+  };
+
+  // Quick Actions handlers
+  const handleAddTransaction = () => {
+    router.push("/transactions?modal=add");
+  };
+
+  const handleCreateBudget = () => {
+    router.push("/budgets?modal=create");
+  };
+
+  const handleAddAccount = () => {
+    router.push("/accounts?modal=add");
+  };
+
+  const handleViewInsights = () => {
+    router.push("/insights");
   };
 
   return (
@@ -261,7 +317,7 @@ export default function DashboardPage() {
                 />
                 Refresh
               </Button>
-              <Button size="sm">
+              <Button size="sm" onClick={handleAddTransaction}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Transaction
               </Button>
@@ -373,16 +429,16 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-3">
-              <Button size="sm" className="h-9">
+              <Button size="sm" className="h-9" onClick={handleAddTransaction}>
                 Add Transaction
               </Button>
-              <Button variant="outline" size="sm" className="h-9">
+              <Button variant="outline" size="sm" className="h-9" onClick={handleCreateBudget}>
                 Create Budget
               </Button>
-              <Button variant="outline" size="sm" className="h-9">
+              <Button variant="outline" size="sm" className="h-9" onClick={handleAddAccount}>
                 Add Account
               </Button>
-              <Button variant="outline" size="sm" className="h-9">
+              <Button variant="outline" size="sm" className="h-9" onClick={handleViewInsights}>
                 View Insights
               </Button>
             </CardContent>
@@ -398,7 +454,7 @@ export default function DashboardPage() {
                     <Filter className="h-4 w-4 mr-2" />
                     Filter
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => router.push("/transactions")}>
                     View All
                   </Button>
                 </div>
@@ -428,12 +484,12 @@ export default function DashboardPage() {
                           <div
                             className={cn(
                               "w-10 h-10 rounded-full flex items-center justify-center",
-                              transaction.transaction_type === "IN"
+                              transaction.transaction_type === "In"
                                 ? "bg-success/10 text-success"
                                 : "bg-destructive/10 text-destructive",
                             )}
                           >
-                            {transaction.transaction_type === "IN" ? (
+                            {transaction.transaction_type === "In" ? (
                               <ArrowUpRight className="h-4 w-4" />
                             ) : (
                               <ArrowDownRight className="h-4 w-4" />
@@ -456,12 +512,12 @@ export default function DashboardPage() {
                           <p
                             className={cn(
                               "font-medium text-sm",
-                              transaction.transaction_type === "IN"
+                              transaction.transaction_type === "In"
                                 ? "text-success"
                                 : "text-destructive",
                             )}
                           >
-                            {transaction.transaction_type === "IN" ? "+" : "-"}
+                            {transaction.transaction_type === "In" ? "+" : "-"}
                             {showBalances
                               ? formatCurrency(parseFloat(transaction.amount))
                               : "••••"}
@@ -474,7 +530,7 @@ export default function DashboardPage() {
                   <div className="text-center py-8">
                     <ArrowUpRight className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
                     <p className="text-muted-foreground">No transactions yet</p>
-                    <Button size="sm" className="mt-2">
+                    <Button size="sm" className="mt-2" onClick={handleAddTransaction}>
                       Add your first transaction
                     </Button>
                   </div>
@@ -486,7 +542,7 @@ export default function DashboardPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Accounts Overview</CardTitle>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" onClick={() => router.push("/accounts")}>
                   Manage
                 </Button>
               </CardHeader>
@@ -546,8 +602,10 @@ export default function DashboardPage() {
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {account.updated_at && !isNaN(new Date(account.updated_at).getTime())
-                              ? format(new Date(account.updated_at), "MMM dd")
-                              : "N/A"}
+                              ? `Updated ${format(new Date(account.updated_at), "MMM dd")}`
+                              : (account.created_at && !isNaN(new Date(account.created_at).getTime())
+                                ? `Added ${format(new Date(account.created_at), "MMM dd")}`
+                                : "Recently")}
                           </p>
                         </div>
                       </div>
@@ -557,7 +615,7 @@ export default function DashboardPage() {
                   <div className="text-center py-8">
                     <Wallet className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
                     <p className="text-muted-foreground">No accounts yet</p>
-                    <Button size="sm" className="mt-2">
+                    <Button size="sm" className="mt-2" onClick={handleAddAccount}>
                       Add your first account
                     </Button>
                   </div>

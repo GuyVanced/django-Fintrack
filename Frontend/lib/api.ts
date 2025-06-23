@@ -52,7 +52,7 @@ export interface Transaction {
   id: number;
   transaction_type: TransactionType;
   account: number;
-  category: number;
+  category: number | string;
   amount: string;
   description: string;
   date: string;
@@ -138,6 +138,15 @@ export interface CreateTransactionFromReceiptData {
   total: number;
   category: string;
   receiptPath: string;
+}
+
+export interface MonthlyInsight {
+  id: number;
+  period_start: string;
+  period_end: string;
+  prompt_payload: any;
+  llm_response: string;
+  created_at: string;
 }
 
 // Pagination interface
@@ -517,6 +526,10 @@ class APIClient {
   }
 
   // AI Insights
+  async getInsights(): Promise<MonthlyInsight[]> {
+    return this.request<MonthlyInsight[]>("/ai/insights/list");
+  }
+
   async generateInsights(data: InsightRequest): Promise<InsightResponse> {
     return this.request<InsightResponse>("/ai/insights/", {
       method: "POST",

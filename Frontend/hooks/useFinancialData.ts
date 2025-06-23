@@ -21,16 +21,16 @@ import type {
 // Query Keys
 export const QUERY_KEYS = {
   accounts: (filters?: AccountFilters) => ["accounts", filters],
-  account: (id: number) => ["account", id],
+  account: (id: number) => ["accounts", id],
   transactions: (filters?: TransactionFilters) => ["transactions", filters],
-  transaction: (id: number) => ["transaction", id],
+  transaction: (id: number) => ["transactions", id],
   userCategories: (filters?: CategoryFilters) => ["userCategories", filters],
   masterCategories: (type?: TransactionType) => ["masterCategories", type],
   budgets: (filters?: BudgetFilters) => ["budgets", filters],
-  budget: (id: number) => ["budget", id],
+  budget: (id: number) => ["budgets", id],
   financialSummary: (filters?: any) => ["financialSummary", filters],
   spendingTrends: (filters?: any) => ["spendingTrends", filters],
-  insights: (year: number, month: number) => ["insights", year, month],
+  insights: ["insights"],
 } as const;
 
 // Accounts Hooks
@@ -311,13 +311,8 @@ export function useGenerateInsights() {
   return useMutation({
     mutationFn: (data: { year: string; month: string }) =>
       apiClient.generateInsights(data),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.insights(
-          parseInt(variables.year),
-          parseInt(variables.month),
-        ),
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.insights });
     },
   });
 }
@@ -341,5 +336,12 @@ export function useCreateTransactionFromReceipt() {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
       queryClient.invalidateQueries({ queryKey: ["financialSummary"] });
     },
+  });
+}
+
+export function useInsights() {
+  return useQuery({
+    queryKey: QUERY_KEYS.insights,
+    queryFn: () => apiClient.getInsights(),
   });
 }

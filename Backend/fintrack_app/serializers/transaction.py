@@ -21,6 +21,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'amount', 'description', 'date', 'receiptPath',
             'isRecurring', 'recurringInterval',
             'nextRecurringDate', 'lastProcessedDate',
+            'createdAt',
         ]
         read_only_fields = ['id']
 

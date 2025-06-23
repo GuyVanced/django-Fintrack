@@ -114,7 +114,7 @@ export default function CategoriesPage() {
   const formatCurrency = (amount: string) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "NPR",
     }).format(parseFloat(amount));
   };
 

@@ -11,12 +11,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowUpDown, Plus, Loader2, ArrowUpRight, ArrowDownRight, Trash2, Receipt } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTransactions, useCreateTransaction, useAccounts, useUserCategories, useMasterCategories, useCreateUserCategory, useDeleteTransaction } from "@/hooks/useFinancialData";
 import type { TransactionType, CreateTransactionData } from "@/lib/api";
 import Image from "next/image";
 
 export default function TransactionsPage() {
+  const searchParams = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTransactionType, setSelectedTransactionType] = useState<TransactionType | "">("");
   const [formData, setFormData] = useState({
@@ -31,6 +33,14 @@ export default function TransactionsPage() {
   });
   const { toast } = useToast();
 
+  // Check for modal parameter in URL and open dialog if present
+  useEffect(() => {
+    const modalParam = searchParams.get('modal');
+    if (modalParam === 'add') {
+      setIsDialogOpen(true);
+    }
+  }, [searchParams]);
+
   const { data: transactionsResponse, isLoading: transactionsLoading } = useTransactions();
   const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
   const { data: userCategoriesResponse, isLoading: categoriesLoading } = useUserCategories();
@@ -42,6 +52,24 @@ export default function TransactionsPage() {
   const transactions = Array.isArray(transactionsResponse) 
     ? transactionsResponse 
     : transactionsResponse?.results || [];
+
+  const sortedTransactions = useMemo(() => {
+    return [...transactions].sort((a, b) => {
+      // Primary sort: by transaction date (descending)
+      const dateA = new Date(a.date);
+      dateA.setHours(0, 0, 0, 0); // Ignore time part for day comparison
+      const dateB = new Date(b.date);
+      dateB.setHours(0, 0, 0, 0); // Ignore time part for day comparison
+      
+      const dateComparison = dateB.getTime() - dateA.getTime();
+      if (dateComparison !== 0) {
+        return dateComparison;
+      }
+
+      // Secondary sort: by creation time for transactions on the same day
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [transactions]);
 
   const accounts = Array.isArray(accountsResponse) 
     ? accountsResponse 
@@ -137,7 +165,7 @@ export default function TransactionsPage() {
   const formatCurrency = (amount: string) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "NPR",
     }).format(parseFloat(amount));
   };
 
@@ -146,6 +174,15 @@ export default function TransactionsPage() {
       year: "numeric",
       month: "short",
       day: "numeric",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
   };
 
@@ -640,9 +677,9 @@ export default function TransactionsPage() {
                 <p className="text-muted-foreground">Loading transactions...</p>
               </CardContent>
             </Card>
-          ) : transactions.length > 0 ? (
+          ) : sortedTransactions.length > 0 ? (
             <div className="space-y-4">
-              {transactions.map((transaction) => (
+              {sortedTransactions.map((transaction) => (
                 <Card key={transaction.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
@@ -664,6 +701,9 @@ export default function TransactionsPage() {
                           <p className="font-medium">{transaction.description}</p>
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <span>{formatDate(transaction.date)}</span>
+                            {transaction.createdAt && (
+                              <span className="ml-1 text-xs text-muted-foreground">{formatTime(transaction.createdAt)}</span>
+                            )}
                             <span>•</span>
                             <span>{getAccountName(transaction.account)}</span>
                             <span>•</span>
