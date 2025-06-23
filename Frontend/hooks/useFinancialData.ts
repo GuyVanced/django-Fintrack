@@ -317,6 +317,16 @@ export function useGenerateInsights() {
   });
 }
 
+export function useDeleteInsight() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => apiClient.deleteInsight(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.insights });
+    },
+  });
+}
+
 // Receipt Processing
 export function useProcessReceipt() {
   return useMutation({

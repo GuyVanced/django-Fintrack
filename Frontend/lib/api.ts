@@ -530,6 +530,12 @@ class APIClient {
     return this.request<MonthlyInsight[]>("/ai/insights/list");
   }
 
+  async deleteInsight(id: number): Promise<void> {
+    return this.request(`/ai/insights/list/${id}/`, {
+      method: "DELETE",
+    });
+  }
+
   async generateInsights(data: InsightRequest): Promise<InsightResponse> {
     return this.request<InsightResponse>("/ai/insights/", {
       method: "POST",

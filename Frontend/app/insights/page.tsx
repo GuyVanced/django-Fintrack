@@ -10,6 +10,7 @@ import {
   Loader2,
   FileText,
   AlertTriangle,
+  Trash2,
 } from "lucide-react";
 import {
   Dialog,
@@ -23,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useMemo } from "react";
 import { Label } from "@/components/ui/label";
-import { useGenerateInsights, useInsights } from "@/hooks/useFinancialData";
+import { useGenerateInsights, useInsights, useDeleteInsight } from "@/hooks/useFinancialData";
 import { format } from "date-fns";
 import type { MonthlyInsight } from "@/lib/api";
 
@@ -170,6 +171,7 @@ export default function InsightsPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const { toast } = useToast();
   const generateInsightsMutation = useGenerateInsights();
+  const deleteInsightMutation = useDeleteInsight();
   const {
     data: insights,
     isLoading: insightsLoading,
@@ -335,15 +337,39 @@ export default function InsightsPage() {
               {sortedInsights.map((insight) => (
                 <Card
                   key={insight.id}
-                  className="hover:shadow-lg transition-shadow"
+                  className="hover:shadow-lg transition-shadow group relative"
                 >
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3">
                       <FileText className="h-5 w-5 text-primary" />
                       <span>
-                        {format(new Date(insight.period_start), "MMMM yyyy")}{" "}
+                        {format(new Date(insight.period_start), "MMMM yyyy")} {" "}
                         Insights
                       </span>
+                      <button
+                        className="absolute top-2 right-2 bg-transparent border-none text-muted-foreground hover:text-red-600 focus:outline-none"
+                        title="Delete Insight"
+                        onClick={e => {
+                          e.stopPropagation();
+                          if (window.confirm('Are you sure you want to delete this insight?')) {
+                            deleteInsightMutation.mutate(insight.id, {
+                              onSuccess: () => {
+                                toast({ title: 'Deleted', description: 'Insight deleted.' });
+                              },
+                              onError: (error: any) => {
+                                toast({ title: 'Error', description: error?.message || 'Failed to delete insight', variant: 'destructive' });
+                              },
+                            });
+                          }
+                        }}
+                        disabled={deleteInsightMutation.isPending}
+                      >
+                        {deleteInsightMutation.isPending ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                      </button>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
