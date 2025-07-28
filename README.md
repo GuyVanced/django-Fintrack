@@ -1,154 +1,173 @@
 # FinTrack - Personal Finance Management
 
-A modern, responsive financial management application built with **Next.js 15 App Router** and designed to work with Django REST API backend.
+A modern, full-stack personal finance management application. **FinTrack** helps users track accounts, transactions, budgets, and gain AI-powered financial insights. Built with **Next.js 15** (frontend) and **Django REST Framework** (backend).
 
-> **✅ Fully converted to Next.js** - No React Router dependencies
+---
 
-## Features
+## 🚀 Features
 
-- **Multi-Account Management**: Track multiple bank accounts, credit cards, and digital wallets
-- **Transaction Tracking**: Comprehensive income and expense tracking with categorization
-- **Budget Planning**: Set and monitor budgets with intelligent alerts
-- **Financial Analytics**: Interactive charts and spending pattern insights
-- **AI-Powered Insights**: Monthly financial analysis and recommendations
-- **Receipt Processing**: OCR-powered receipt scanning and automatic transaction creation
-- **Responsive Design**: Beautiful, mobile-first interface
-- **Dark/Light Theme**: Automatic theme switching with manual override
+- **Multi-Account Management**: Track bank accounts, credit cards, wallets
+- **Transaction Tracking**: Categorize income/expenses, recurring transactions
+- **Budget Planning**: Set, monitor, and get alerts for budgets
+- **Financial Analytics**: Interactive charts, spending insights
+- **AI Insights**: Monthly analysis & recommendations (LLM-powered)
+- **Receipt OCR**: Scan receipts, auto-create transactions
+- **Responsive UI**: Mobile-first, dark/light theme
+- **Secure Auth**: Token-based authentication
 
-## Tech Stack
+---
 
-- **Frontend**: Next.js 15 App Router, React 18, TypeScript
-- **Routing**: Next.js file-based routing (no React Router)
-- **Styling**: Tailwind CSS, shadcn/ui components
-- **State Management**: TanStack React Query, React Context
-- **Authentication**: Token-based auth with Django REST API + Next.js middleware
-- **Icons**: Lucide React
-- **Theme**: Next-themes for dark/light mode
+## 🏗️ Architecture
 
-## Quick Start
+### Frontend
+- **Framework**: Next.js 15 App Router, React 18, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui
+- **State**: TanStack React Query, React Context
+- **Auth**: Token-based, Next.js middleware
+- **Other**: Lucide React icons, next-themes
+
+### Backend
+- **Framework**: Django 5, Django REST Framework
+- **Auth**: dj-rest-auth, django-allauth
+- **Async Tasks**: Celery, Redis
+- **AI/LLM**: Google Generative AI integration
+- **OCR**: Receipt image processing
+- **Database**: PostgreSQL (via Docker)
+
+---
+
+## 📂 Project Structure
+
+```
+Finance-Tracker/
+├── Frontend/           # Next.js frontend
+│   ├── app/            # App Router pages
+│   ├── components/     # UI & layout components
+│   ├── contexts/       # React Contexts
+│   ├── hooks/          # Custom hooks
+│   ├── lib/            # API client, utils
+│   ├── public/         # Static assets
+│   └── ...
+├── Backend/            # Django backend
+│   ├── djangoBackend/  # Django project config
+│   ├── fintrack_app/   # Main app (models, views, services)
+│   ├── requirements.txt
+│   ├── docker-compose.yml
+│   └── ...
+└── README.md           # (You are here)
+```
+
+---
+
+## ⚙️ Quick Start
 
 ### Prerequisites
-
 - Node.js 18+
-- Django backend with REST API (see [Django Integration Guide](DJANGO_INTEGRATION.md))
+- Python 3.10+
+- Docker (for DB, recommended)
 
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd fintrack-nextjs
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment**
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-   Update `NEXT_PUBLIC_API_URL` to your Django backend URL.
-
-4. **Start development server**
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to `http://localhost:3000`
-
-## Django Backend Setup
-
-This frontend requires a Django REST API backend. See [DJANGO_INTEGRATION.md](DJANGO_INTEGRATION.md) for detailed setup instructions.
-
-### Key API Endpoints Required
-
-- Authentication: `/api/dj-rest-auth/`
-- Accounts: `/api/accounts/`
-- Transactions: `/api/transactions/`
-- Budgets: `/api/budgets/`
-- Categories: `/api/category/`
-- Master Categories: `/api/master-categories/`
-
-## Project Structure
-
-```
-├── app/                          # Next.js App Router (file-based routing)
-│   ├── layout.tsx               # Root layout
-│   ├── page.tsx                 # Landing page (/)
-│   ├── loading.tsx              # Global loading UI
-│   ├── not-found.tsx            # 404 page
-│   ├── providers.tsx            # React Query & Auth providers
-│   ├── globals.css              # Global styles
-│   ├── login/page.tsx           # Login page (/login)
-│   ├── register/page.tsx        # Register page (/register)
-│   ├── dashboard/page.tsx       # Dashboard (/dashboard)
-│   ├── accounts/page.tsx        # Accounts (/accounts)
-│   ├── transactions/page.tsx    # Transactions (/transactions)
-│   ├── budgets/page.tsx         # Budgets (/budgets)
-│   ├── categories/page.tsx      # Categories (/categories)
-│   └── insights/page.tsx        # Insights (/insights)
-├── components/
-│   ├── ui/                      # shadcn/ui components
-│   ├── DashboardLayout.tsx      # Dashboard layout wrapper
-│   └── ProtectedRoute.tsx       # Authentication wrapper
-├── contexts/
-│   └── AuthContext.tsx          # Authentication state
-├── hooks/
-│   ├── useFinancialData.ts      # React Query hooks for API
-│   └── use-toast.ts             # Toast notifications
-├── lib/
-│   ├── api.ts                   # Django API client
-│   └── utils.ts                 # Utility functions
-├── middleware.ts                # Next.js auth middleware
-└── next.config.js               # Next.js configuration
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd Finance-Tracker
 ```
 
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run typecheck` - Run TypeScript checks
-
-## Key Features Implementation
-
-### Authentication
-
-- Token-based authentication with Django REST API
-- Automatic token management and refresh
-- Protected routes with redirect logic
-
-### Financial Data Management
-
-- Real-time balance calculations
-- Transaction filtering by date, type, category
-- Multi-account support with account type mapping
-- Budget tracking with progress indicators
-
-### User Experience
-
-- Responsive design for all screen sizes
-- Dark sidebar with emerald green accent theme
-- Loading states and error handling
-- Toast notifications for user feedback
-
-## Environment Variables
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000  # Django backend URL
-NODE_ENV=development                       # Environment
+### 2. Backend Setup (Django)
+```bash
+cd Backend
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+cp .env.example .env  # create and edit environment variables
+# Start PostgreSQL via Docker (recommended)
+docker-compose up -d
+# Run migrations
+python manage.py migrate
+# (Optional) Create superuser
+python manage.py createsuperuser
+# Start backend server
+python manage.py runserver
 ```
 
-## Contributing
+### 3. Frontend Setup (Next.js)
+```bash
+cd ../Frontend
+npm install
+cp .env.example .env.local  # set NEXT_PUBLIC_API_URL to backend
+npm run dev
+```
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000/api/
+
+---
+
+## 🔑 API Overview
+
+The backend exposes a RESTful API for all resources. Authentication is via token (dj-rest-auth).
+
+### Main Endpoints
+- **Auth**: `/api/dj-rest-auth/`, `/api/dj-rest-auth/registration/`
+- **Accounts**: `/api/accounts/`
+- **Transactions**: `/api/transactions/`
+- **Budgets**: `/api/budgets/`
+- **Categories**: `/api/category/`, `/api/master-categories/`
+- **AI Insights**: `/api/ai/insights/`
+- **Receipt OCR**: `/api/ai/receipt/process`, `/api/ai/receipt/create`
+
+See [`Backend/docs.md`](Backend/docs.md) for full API details, request/response samples, and error codes.
+
+---
+
+## 🧩 Tech Stack
+
+### Frontend
+- Next.js 15, React 18, TypeScript
+- Tailwind CSS, shadcn/ui, Lucide React
+- TanStack React Query, next-themes
+
+### Backend
+- Django 5, Django REST Framework
+- dj-rest-auth, django-allauth
+- Celery, Redis, PostgreSQL
+- Google Generative AI, OCR
+
+---
+
+## 🗂️ Key Features Implementation
+
+- **Authentication**: Token-based, auto-refresh, protected routes
+- **Financial Data**: Real-time balances, filtering, multi-account
+- **Budgets**: Progress tracking, alerts
+- **AI Insights**: LLM-powered monthly summaries
+- **Receipt OCR**: Image upload, auto-transaction
+- **User Experience**: Responsive, dark/light, toasts, error handling
+
+---
+
+## 🛠️ Development Scripts
+
+- `npm run dev` (frontend) - Start Next.js dev server
+- `npm run build` (frontend) - Build frontend
+- `npm run start` (frontend) - Start production frontend
+- `python manage.py runserver` (backend) - Start Django dev server
+- `docker-compose up -d` (backend) - Start DB via Docker
+
+---
+
+## 🌍 Environment Variables
+
+### Frontend (`Frontend/.env.local`)
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### Backend (`Backend/.env`)
+- See `Backend/.env.example` for all variables (DB, secret keys, etc.)
+
+---
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -156,6 +175,8 @@ NODE_ENV=development                       # Environment
 4. Add tests if applicable
 5. Submit a pull request
 
-## License
+---
 
-This project is licensed under the MIT License.
+## 📄 License
+
+This project is licensed under the MIT License. 
