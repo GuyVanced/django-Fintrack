@@ -1,6 +1,9 @@
 "use client";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+
+// Force dynamic rendering to prevent SSR issues with React Query
+export const dynamic = "force-dynamic";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
