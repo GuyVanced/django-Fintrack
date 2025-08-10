@@ -1,6 +1,6 @@
 from django.urls import path,include
 # from .views import UserView, AccountListView,AccountRetrieveUpdateDestroyView
-from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptOCRAPIView, TransactionCreateAPIView, MasterCategoryListCreateView, MonthlyInsightRetrieveDestroyView,MonthlyInsightListView
+from .views import  AccountListCreateView,AccountRetrieveUpdateDestroyView,TransactionListCreateView,TransactionRetrieveUpdateDestroyView,BudgetListCreateView,BudgetRetrieveUpdateDestroyView,CategoryListCreateView,CategoryRetrieveUpdateDestroyAPIView,MonthlyInsightView, ReceiptOCRAPIView, TransactionCreateAPIView, MasterCategoryListCreateView, MonthlyInsightRetrieveDestroyView,MonthlyInsightListView, FinancialSummaryView
 
 urlpatterns = [
     path('dj-rest-auth/',include('dj_rest_auth.urls')),
@@ -14,6 +14,7 @@ urlpatterns = [
     path('budgets/<int:id>/',BudgetRetrieveUpdateDestroyView.as_view(),name='budget-detail'),
     path('category/',CategoryListCreateView.as_view(),name='transaction_categories'),
     path('category/<int:id>/',CategoryRetrieveUpdateDestroyAPIView.as_view(),name='transaction_category'),
+    path('financial-summary/',FinancialSummaryView.as_view(),name='financial_summary'),
     
     path('ai/insights/',MonthlyInsightView.as_view(),name='monthly_insights'),
     path("ai/receipt/process", ReceiptOCRAPIView.as_view(), name="process_receipt"),

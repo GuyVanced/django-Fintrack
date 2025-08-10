@@ -158,6 +158,15 @@ export default function DashboardPage() {
   );
 
   const { monthlyIncome, monthlyExpenses } = useMemo(() => {
+    // Use financial summary data if available (more efficient)
+    if (financialSummary) {
+      return {
+        monthlyIncome: financialSummary.total_income || 0,
+        monthlyExpenses: financialSummary.total_expenses || 0,
+      };
+    }
+    
+    // Fallback to transaction-based calculation
     const income =
       sortedTransactions
         ?.filter((t) => t.transaction_type === "In")
@@ -169,7 +178,7 @@ export default function DashboardPage() {
         ?.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0) || 0;
 
     return { monthlyIncome: income, monthlyExpenses: expenses };
-  }, [sortedTransactions]);
+  }, [sortedTransactions, financialSummary]);
 
   const activeBudgets = budgets?.length || 0;
   const exceededBudgets =
