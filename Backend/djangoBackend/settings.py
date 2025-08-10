@@ -95,7 +95,23 @@ MIDDLEWARE = [
 # CORS settings for production
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000,https://*.vercel.app,https://*.railway.app,https://fintrackapp-kushal.vercel.app').split(',')
 
+
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    # add others if needed
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
 
 # Additional CORS settings for development
 if DEBUG:
