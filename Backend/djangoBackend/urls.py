@@ -16,12 +16,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.http import JsonResponse
 
+def api_root(request):
+    """API root endpoint showing available endpoints."""
+    return JsonResponse({
+        'message': 'FinTrack API is running!',
+        'endpoints': {
+            'authentication': '/api/dj-rest-auth/',
+            'accounts': '/api/accounts/',
+            'transactions': '/api/transactions/',
+            'budgets': '/api/budgets/',
+            'categories': '/api/category/',
+            'financial_summary': '/api/financial-summary/',
+            'ai_insights': '/api/ai/insights/',
+            'admin': '/admin/'
+        }
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/',include('fintrack_app.urls')),
     path('api-auth/',include('rest_framework.urls')),
-
-    
 ]
