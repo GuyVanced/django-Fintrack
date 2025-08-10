@@ -1,4 +1,3 @@
-
 # Use Python 3.11 slim image
 FROM python:3.11-slim
 
@@ -25,13 +24,8 @@ COPY . .
 # Create staticfiles directory
 RUN mkdir -p staticfiles
 
-# Run migrations and collect static files
-RUN python manage.py migrate --noinput
-RUN python manage.py collectstatic --noinput --clear
-
 # Expose the port
 EXPOSE 8000
 
-# Start the application
-CMD ["gunicorn", "djangoBackend.wsgi:application", "--bind", "0.0.0.0:8000"]
-
+# Run migrations + collectstatic at container start
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && gunicorn djangoBackend.wsgi:application --bind 0.0.0.0:8000"]
