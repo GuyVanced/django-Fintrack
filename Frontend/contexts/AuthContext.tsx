@@ -12,13 +12,13 @@ import { apiClient } from "@/lib/api";
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<any>;
   register: (
     username: string,
     email: string,
     password1: string,
     password2: string,
-  ) => Promise<void>;
+  ) => Promise<any>;
   logout: () => Promise<void>;
 }
 
