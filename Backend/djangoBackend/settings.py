@@ -45,7 +45,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^qfmmcg5vkh0tg#d#cd@*$9qfn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app', '').split(',')
 
 # Application definition
 
@@ -90,11 +90,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
-    'fintrack_app.middleware.CSRFExemptMiddleware',  # Exempt API endpoints from CSRF
 ]
 
 # CORS settings for production
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000,https://*.vercel.app,https://*.railway.app').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000,https://*.vercel.app,https://*.railway.app,https://fintrackapp-kushal.vercel.app').split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
