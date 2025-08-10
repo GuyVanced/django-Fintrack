@@ -14,6 +14,12 @@ from pathlib import Path
 import os
 import ssl
 import certifi
+import dj_database_url
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 from celery.schedules import crontab
@@ -34,13 +40,12 @@ MEDIA_URL  = "/media/"
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^qfmmcg5vkh0tg#d#cd@*$9qfn2o$f@7t)9m!so*@$8ec((c!*'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^qfmmcg5vkh0tg#d#cd@*$9qfn2o$f@7t)9m!so*@$8ec((c!*')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app').split(',')
 
 # Application definition
 
@@ -76,6 +81,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,8 +92,14 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS settings for production
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000,https://*.vercel.app,https://*.railway.app').split(',')
+
 CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS settings for development
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'djangoBackend.urls'
 
@@ -112,25 +124,19 @@ WSGI_APPLICATION = 'djangoBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'os.getenv("POSTGRES_DB")',
-#         'USER':os.getenv("POSTGRES_USER"),
-#         'PASSWORD':os.getenv("POSTGRES_PASSWORD"),
-#         'HOST':'db',
-#         'PORT': '5432',
-
-#     }
-# }
-DATABASES = {
-    #for now sqlite3 is used
-    'default':{
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME':BASE_DIR / 'db.sqlite3',
-        
+# Use PostgreSQL on Railway, fallback to SQLite for local development
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -169,6 +175,10 @@ USE_TZ = True  # Keep this True to enable timezone-aware datetimes
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Whitenoise configuration for static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -221,13 +231,13 @@ REST_FRAMEWORK = {
 # EMAIL_HOST_PASSWORD='***REMOVED***'
 
 # EMAIL_BACKEND='anymail.backends.brevo.EmailBackend'
-EMAIL_BACKEND='anymail.backends.sendgrid.EmailBackend'
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'anymail.backends.sendgrid.EmailBackend')
 
-ANYMAIL={
-    "SENDGRID_API_KEY":"***REMOVED***",
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.getenv('SENDGRID_API_KEY', ''),
 }
 
-DEFAULT_FROM_EMAIL="quester561@gmail.com"
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'quester561@gmail.com')
 
 
 
@@ -247,8 +257,8 @@ DEFAULT_FROM_EMAIL="quester561@gmail.com"
 SITE_ID=1
 
 # Celery Settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Add this
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')  # Add this
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'  # Add this
