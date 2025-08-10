@@ -45,7 +45,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^qfmmcg5vkh0tg#d#cd@*$9qfn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app', '').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,.vercel.app').split(',')
 
 # Application definition
 
