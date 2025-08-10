@@ -3,6 +3,10 @@
 
 echo "Starting build process..."
 
+# Install dependencies (Railway usually does this, but just in case)
+echo "Installing dependencies..."
+pip install -r requirements.txt
+
 echo "Running Django migrations..."
 python manage.py migrate --noinput
 
