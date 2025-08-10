@@ -90,6 +90,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
+    'fintrack_app.middleware.CSRFExemptMiddleware',  # Exempt API endpoints from CSRF
 ]
 
 # CORS settings for production
