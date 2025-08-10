@@ -27,6 +27,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             staleTime: 5 * 60 * 1000, // 5 minutes
             refetchOnWindowFocus: false,
             refetchOnReconnect: true,
+            // Disable queries during SSR
+            enabled: typeof window !== "undefined",
           },
           mutations: {
             retry: false,
