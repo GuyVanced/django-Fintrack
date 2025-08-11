@@ -93,7 +93,13 @@ MIDDLEWARE = [
 ]
 
 # CORS settings for production
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000,https://*.vercel.app,https://*.railway.app,https://fintrackapp-kushal.vercel.app').split(',')
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "https://fintrackapp-kushal.vercel.app",
+    "https://django-fintrack-deployment.up.railway.app",
+]
+
 
 
 CORS_ALLOW_CREDENTIALS = True
