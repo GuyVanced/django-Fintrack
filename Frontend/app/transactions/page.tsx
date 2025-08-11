@@ -266,9 +266,10 @@ export default function TransactionsPage() {
     setReceiptResult(null);
     try {
       const formData = new FormData();
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
       formData.append('image', receiptImage);
       const token = localStorage.getItem('auth_token');
-      const response = await fetch('http://127.0.0.1:8000/api/ai/receipt/process', {
+      const response = await fetch(`${baseUrl}/api/ai/receipt/process`, {
         method: 'POST',
         headers: token ? { 'Authorization': `Token ${token}` } : {},
         body: formData,
@@ -369,7 +370,8 @@ export default function TransactionsPage() {
       };
       console.log('Receipt create payload:', payload);
       const token = localStorage.getItem('auth_token');
-      const response = await fetch('http://127.0.0.1:8000/api/ai/receipt/create', {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${baseUrl}/api/ai/receipt/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
