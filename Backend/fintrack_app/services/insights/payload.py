@@ -41,6 +41,7 @@ def make_prompt(payload: dict) -> str:
     "6. Three concrete action items\n\n"
     "Data:\n```json\n{data}```\n\n"
     "Make sure you highlight the financial aspect of the summary, not the technical aspect like (these categories might be missing, check accurate recordings, etc.). "
+    "The currency is NPR (Nepalese Rupee) "
     "You are generating the report that is being read directly by the user, so use sentence structures like (you, your, etc.) wherever appropriate. "
     "Show values and relative percentages wherever appropriate (e.g. Net Savings %, percentage of income, percentage of expense, etc.).\n\n"
     "Example format:\n"
