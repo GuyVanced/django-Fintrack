@@ -1,6 +1,6 @@
 # FinTrack - Personal Finance Management
 
-A modern, full-stack personal finance management application. **FinTrack** helps users track accounts, transactions, budgets, and gain AI-powered financial insights. Built with **Next.js 15** (frontend) and **Django REST Framework** (backend).
+A modern, full-stack personal finance management application. **FinTrack** helps users track accounts, transactions, budgets, and AI-powered financial insights. Built with **Next.js 15** (frontend) and **Django REST Framework** (backend).
 
 ---
 
